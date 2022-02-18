@@ -57,6 +57,7 @@ public class EbookServiceImpl extends ServiceImpl<EbookDao, EbookEntity> impleme
     }
 
     public void cjSave(EbookSaveReq req) {
+        log.info("cjSave请求：{}", req);
         EbookEntity convertor = cjDozerUtil.convertor(req, EbookEntity.class);
         saveOrUpdate(convertor);
     }

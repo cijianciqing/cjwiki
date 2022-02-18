@@ -6,7 +6,7 @@
                 </a-input>
             </a-form-item>
             <a-form-item>
-                <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">
+                <a-button type="primary" @click="handleQuery(param)">
                     查询
                 </a-button>
             </a-form-item>
@@ -41,7 +41,7 @@
                         cancel-text="否"
                         @confirm="handleDelete(record.id)"
                 >
-                    <a-button type="danger">
+                    <a-button type="primary" danger>
                         删除
                     </a-button>
                 </a-popconfirm>
@@ -130,7 +130,13 @@
                     slots: { customRender: 'action' }
                 }
             ];
-            let param = reactive({});
+            //查询的参数
+            const param = reactive({
+                name:"",
+                cjPageReq: {
+                    page: 1,
+                    size: 3,
+                }});
             //数据源需要array 而不是 object
 
             const ebooks = reactive({data:[]});
@@ -145,25 +151,16 @@
 
             onMounted(() => {
                 // console.log("EbookTable mounted......")
-                handleQuery({
-                    cjPageReq: {
-                        page: 1,
-                        size: 3
-                    },
-                });
+                handleQuery(param);
             });
             /**
              * 查询数据
              **/
             const handleQuery = (params :any) => {
                 loading.value = true;
-                axios.post("/wiki/ebook/table", {
-                        name: params.name,
-                        cjPageReq: {
-                            page: params.cjPageReq.page,
-                            size: params.cjPageReq.size,
-                        },
-                }).then((response) => {
+                console.log("handleQuery():",params)
+                axios.post("/wiki/ebook/table", params
+                ).then((response) => {
                     loading.value = false;
                     const data = response.data;
                     if (data.code == process.env.VUE_APP_ResponseSuccess){
@@ -187,12 +184,7 @@
                     const data = response.data; // data = commonResp
                     if (data.code == process.env.VUE_APP_ResponseSuccess){
                         // 重新加载列表
-                        handleQuery({
-                            cjPageReq: {
-                                page: pagination.current,
-                                size: pagination.pageSize,
-                            }
-                        });
+                        handleQuery(param);
                     }
                 });
             };
@@ -203,12 +195,9 @@
              */
             const handleTableChange = (pagination: any) => {
                 console.log("看看自带的分页参数都有啥：" + pagination);
-                handleQuery({
-                    cjPageReq: {
-                        page: pagination.current,
-                        size: pagination.pageSize,
-                    }
-                });
+                param.cjPageReq.page = pagination.current
+                param.cjPageReq.size = pagination.pageSize
+                handleQuery(param);
             };
 
 
@@ -230,7 +219,7 @@
              */
             const edit = (record: any) => {
                 modalVisible.value = true;
-                console.log("edit.................")
+                console.log("edit.....record............",record)
                 ebook.data = Tool.copy(record);
             };
             const handleModalOk = () => {
@@ -242,12 +231,7 @@
                         modalVisible.value = false;
 
                         // 重新加载列表，有可能是添加
-                        handleQuery({
-                            cjPageReq: {
-                                page: pagination.current,
-                                size: pagination.pageSize,
-                            }
-                        });
+                        handleQuery(param);
                     } else {
                         message.error(data.msg);
                     }
