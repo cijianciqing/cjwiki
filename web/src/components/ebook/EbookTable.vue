@@ -1,4 +1,22 @@
 <template>
+    <p>
+        <a-form layout="inline" :model="param">
+            <a-form-item>
+                <a-input v-model:value="param.name" placeholder="名称">
+                </a-input>
+            </a-form-item>
+            <a-form-item>
+                <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">
+                    查询
+                </a-button>
+            </a-form-item>
+            <a-form-item>
+                <a-button type="primary" @click="add()">
+                    新增
+                </a-button>
+            </a-form-item>
+        </a-form>
+    </p>
     <a-table
             :columns="columns"
             :row-key="record => record.id"
@@ -6,10 +24,9 @@
 
             :loading="loading"
             :pagination="pagination"
+            @change="handleTableChange"
     >
-<!--
 
-     @change="handleTableChange"-->
         <template v-slot:cover1="{ text: cover }">
             <img v-if="cover" :src="cover" alt="avatar" />
         </template>
@@ -31,12 +48,45 @@
             </a-space>
         </template>
     </a-table>
+    <a-modal
+            title="电子书表单"
+            v-model:visible="modalVisible"
+            :confirm-loading="modalLoading"
+            @ok="handleModalOk"
+    >
+        <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+            <a-form-item label="封面">
+                <a-input v-model:value="ebook.cover" />
+            </a-form-item>
+            <a-form-item label="名称">
+                <a-input v-model:value="ebook.name" />
+            </a-form-item>
+             <a-form-item label="分类一">
+                 <a-input v-model:value="ebook.category1Id" />
+             </a-form-item>
+             <a-form-item label="分类二">
+                 <a-input v-model:value="ebook.category2Id" />
+             </a-form-item>
+            <a-form-item label="描述">
+                <a-input v-model:value="ebook.description" type="textarea" />
+            </a-form-item>
+        </a-form>
+    </a-modal>
+
+  <!--  <a-button type="primary" @click="showModal">Open Modal</a-button>
+    <a-modal v-model:visible="visible1" title="Basic Modal" @ok="handleOk1">
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+    </a-modal>-->
 </template>
+
 <script lang="ts">
     // import {SmileOutlined, DownOutlined} from '@ant-design/icons-vue';
     import {defineComponent, reactive, ref, onMounted, toRef} from 'vue';
     import axios from "axios";
     import { message } from 'ant-design-vue';
+    import {Tool} from "@/util/tool";
 
 
 
@@ -83,13 +133,14 @@
             let param = reactive({});
             //数据源需要array 而不是 object
 
-            let ebooks = reactive({data:[]});
+            const ebooks = reactive({data:[]});
+
             let pagination = reactive({
                 current: 1,
-                pageSize: 2,
+                pageSize: 3,
                 total: 0
             });
-            let loading = ref(false);
+            const loading = ref(false);
 
 
             onMounted(() => {
@@ -125,6 +176,9 @@
                     }
                 });
             };
+
+
+
             /**
              * 删除数据
              **/
@@ -143,6 +197,81 @@
                 });
             };
 
+
+            /**
+             * pagination表格点击页码时触发
+             */
+            const handleTableChange = (pagination: any) => {
+                console.log("看看自带的分页参数都有啥：" + pagination);
+                handleQuery({
+                    cjPageReq: {
+                        page: pagination.current,
+                        size: pagination.pageSize,
+                    }
+                });
+            };
+
+
+            // -------- 表单内容 ---------
+            const ebook = reactive({data:{}});
+            const modalVisible = ref(false);
+            const modalLoading = ref(false);
+
+            /**
+             * 新增ebook
+             */
+
+            const add = () => {
+                modalVisible.value = true;
+                ebook.data = {};
+            };
+            /**
+             * 编辑ebook
+             */
+            const edit = (record: any) => {
+                modalVisible.value = true;
+                console.log("edit.................")
+                ebook.data = Tool.copy(record);
+            };
+            const handleModalOk = () => {
+                modalLoading.value = true;
+                axios.post("/wiki/ebook/save", ebook.data).then((response) => {
+                    modalLoading.value = false;
+                    const data = response.data; // data = commonResp
+                    if (data.code == process.env.VUE_APP_ResponseSuccess){
+                        modalVisible.value = false;
+
+                        // 重新加载列表，有可能是添加
+                        handleQuery({
+                            cjPageReq: {
+                                page: pagination.current,
+                                size: pagination.pageSize,
+                            }
+                        });
+                    } else {
+                        message.error(data.msg);
+                    }
+                });
+            };
+
+
+            /*
+            * 测试
+            *
+            * */
+
+            //modal测试
+            // const visible1 = ref(false);
+            //
+            // const showModal = () => {
+            //     visible1.value = true;
+            // };
+            //
+            // const handleOk = (e: MouseEvent) => {
+            //     console.log(e);
+            //     visible1.value = false;
+            // };
+
             return {
                 param,
                 ebooks: toRef(ebooks, 'data'),
@@ -150,6 +279,22 @@
                 columns,
                 loading,
                 handleQuery,
+                handleDelete,
+
+                handleTableChange,
+
+                ebook: toRef(ebook, 'data'),
+                modalVisible,
+                modalLoading,
+                handleModalOk,
+                add,
+                edit,
+
+                //测试数据
+                // visible1,
+                // showModal,
+                // handleOk,
+
             };
         },
 
