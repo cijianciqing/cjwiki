@@ -14,6 +14,8 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'vue/no-unused-components': 'off'  //不使用import的component
+    'vue/no-unused-components': 'off', //不使用import的component
+    '@typescript-eslint/no-unused-vars':0,//引用但未使用的变量
+    'vue/no-unused-vars':0//引用但未使用的变量
   }
 }

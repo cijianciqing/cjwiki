@@ -66,13 +66,13 @@
     import {defineComponent, onMounted, ref, reactive, toRef} from 'vue';
     import axios from 'axios'
 
-    import EbookList from '../components/EbookList.vue'
+    import EbookList from '../components/ebook/EbookList.vue'
 
     export default defineComponent({
 
         name: 'Home',
         setup() {
-            console.log("defineComponent......")
+            //console.log("defineComponent......")
 
 
         },

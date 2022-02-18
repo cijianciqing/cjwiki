@@ -39,19 +39,6 @@
     // import { defineComponent } from 'vue';
 
     var listData: any = reactive({books: []})
-    // const ebooks1 = reactive({books: []});
-    //
-    // for (let i = 0; i < 6; i++) {
-    //     listData.push({
-    //         href: 'https://www.antdv.com/',
-    //         title: `ant design vue part ${i}`,
-    //         avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    //         description:
-    //             'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-    //         content:
-    //             'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-    //     });
-    // }
 
     export default ({
         name: "EbookList",
@@ -73,7 +60,7 @@
             onMounted(() => {
                 axios({
                     method: 'get',
-                    url: 'http://localhost:8083/wiki/ebook/list'
+                    url: '/wiki/ebook/list'
                 }).then(function (response) {
                     listData.books = response.data.data;
                     console.log(listData);
