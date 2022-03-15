@@ -1,4 +1,4 @@
-package cj.springboot.wiki.config;
+package cj.springboot.wiki.config.servlet;
 
 import javax.servlet.*;
 import java.io.IOException;

@@ -1,84 +1,138 @@
 <template>
     <a-layout>
         <a-layout-sider width="200" style="background: #fff">
+
             <a-menu
-                    mode="inline"
-                    v-model:selectedKeys="selectedKeys2"
+                    id="dddddd"
+                    style="width: 256px"
                     v-model:openKeys="openKeys"
-                    :style="{ height: '100%', borderRight: 0 }"
+                    v-model:selectedKeys="selectedKeys"
+                    mode="inline"
+                    @click="handleClick"
             >
-                <a-sub-menu key="sub1">
-                    <template #title>
-              <span>
-                <user-outlined/>
-                subnav 1
-              </span>
+                <!--
+               第一层：
+                遍历categorys，如果item包含children,如果不包含children
+                -->
+                <template v-for="item in categorys">
+                    <template v-if="item.children">
+                        <a-sub-menu :key="item.id">
+                            <template v-slot:title>
+                                <span><user-outlined/>{{item.name}}</span>
+                            </template>
+                            <!--
+                             第二层：
+                              遍历categorys，如果item包含children,如果不包含children
+                              -->
+                            <template v-for="item2 in item.children">
+                                <template v-if="item2.children">
+                                    <a-sub-menu :key="item2.id">
+                                        <template v-slot:title>
+                                            <span><user-outlined/>{{item2.name}}</span>
+                                        </template>
+                                        <!--
+                                         第三层--start:
+                                          遍历categorys，如果item包含children,如果不包含children
+                                          -->
+                                        <!--这种方法报错：
+                                        VueCompilerError: <template v-for> key should be placed on the <template> tag.
+                                        -->
+                                        <!--<template v-for="item3 in item2.children" >
+                                            <a-menu-item  :key="item3.id">
+                                                <MailOutlined /><span>{{item3.name}}</span>
+                                            </a-menu-item>
+                                        </template>-->
+                                        <a-menu-item v-for="item3 in item2.children" :key="item3.id">
+                                            <MailOutlined /><span>{{item3.name}}</span>
+                                        </a-menu-item>
+                                        <!--第三层--end-->
+                                    </a-sub-menu>
+
+                                </template>
+                                <template v-else>
+                                    <a-menu-item :key="item2.id">
+                                        <MailOutlined/>
+                                        <span>{{item2.name}}</span>
+                                    </a-menu-item>
+                                </template>
+                            </template>
+                            <!--第二层--end-->
+                        </a-sub-menu>
                     </template>
-                    <a-menu-item key="1">option1</a-menu-item>
-                    <a-menu-item key="2">option2</a-menu-item>
-                    <a-menu-item key="3">option3</a-menu-item>
-                    <a-menu-item key="4">option4</a-menu-item>
-                </a-sub-menu>
-                <a-sub-menu key="sub2">
-                    <template #title>
-              <span>
-                <laptop-outlined/>
-                subnav 2
-              </span>
+                    <template v-else>
+                        <a-menu-item :key="item.id">
+                            <MailOutlined/>
+                            <span>{{item.name}}</span>
+                        </a-menu-item>
                     </template>
-                    <a-menu-item key="5">option5</a-menu-item>
-                    <a-menu-item key="6">option6</a-menu-item>
-                    <a-menu-item key="7">option7</a-menu-item>
-                    <a-menu-item key="8">option8</a-menu-item>
-                </a-sub-menu>
-                <a-sub-menu key="sub3">
-                    <template #title>
-              <span>
-                <notification-outlined/>
-                subnav 3
-              </span>
-                    </template>
-                    <a-menu-item key="9">option9</a-menu-item>
-                    <a-menu-item key="10">option10</a-menu-item>
-                    <a-menu-item key="11">option11</a-menu-item>
-                    <a-menu-item key="12">option12</a-menu-item>
-                </a-sub-menu>
+
+                </template>
+                <!--第一层--end-->
+
             </a-menu>
         </a-layout-sider>
-
-        <!-- <a-layout style="padding: 0 24px 24px"> -->
-
-        <a-layout-content
-                :style="{
-            background: '#fff',
-            padding: '24px',
-            margin: 0,
-            minHeight: '280px',
-          }"
-        >
-            <EbookList />
-        </a-layout-content>
-        <!-- </a-layout> -->
     </a-layout>
 </template>
-
 <script lang="ts">
-    import {defineComponent, onMounted, ref, reactive, toRef} from 'vue';
-    import axios from 'axios'
-
-    import EbookList from '../components/ebook/EbookList.vue'
+    import {defineComponent, onMounted, reactive, ref, toRef, watch} from 'vue';
+    import axios from "axios";
+    import {message} from "ant-design-vue";
 
     export default defineComponent({
-
-        name: 'Home',
         setup() {
-            //console.log("defineComponent......")
+            const selectedKeys = ref<string[]>([]);
+            const openKeys = ref<string[]>([]);
 
 
+            onMounted(() => {
+                // console.log("CategoryTable mounted......")
+                handleQuery();
+            });
+
+            const categorys = reactive({data: []});
+            const loading = ref(false);
+            /**
+             * 查询数据
+             **/
+            const handleQuery = () => {
+                loading.value = true;
+                axios.post("/wiki/category/table"
+                ).then((response) => {
+                    loading.value = false;
+                    const data = response.data;
+                    if (data.code == process.env.VUE_APP_ResponseSuccess) {
+                        categorys.data = data.data;
+                    } else {
+                        message.error(data.msg);
+                    }
+                });
+            };
+
+
+            const handleClick = (e: Event) => {
+                console.log('click', e);
+                console.log("selectedKeys:", selectedKeys)
+                console.log("openKeys:", openKeys)
+            };
+            const titleClick = (e: Event) => {
+                console.log('titleClick', e);
+            };
+            watch(
+                () => openKeys,
+                val => {
+                    console.log('openKeys', val);
+                },
+            );
+            return {
+                categorys: toRef(categorys, 'data'),
+                selectedKeys,
+                openKeys,
+
+                handleClick,
+                titleClick,
+            };
         },
-        components:{
-            EbookList
-        }
 
-        });
+    });
 </script>
+

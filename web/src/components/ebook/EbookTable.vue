@@ -158,7 +158,7 @@
              **/
             const handleQuery = (params :any) => {
                 loading.value = true;
-                console.log("handleQuery():",params)
+                // console.log("handleQuery():",params)
                 axios.post("/wiki/ebook/table", params
                 ).then((response) => {
                     loading.value = false;

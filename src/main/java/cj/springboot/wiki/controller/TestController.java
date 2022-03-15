@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author cj
  * @since 2022-02-08
  */
-@RestController
+//@RestController
 public class TestController {
 
     @RequestMapping(value = "/wiki/tttt")

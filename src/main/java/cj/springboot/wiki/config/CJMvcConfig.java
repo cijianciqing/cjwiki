@@ -66,16 +66,21 @@ public class CJMvcConfig implements WebMvcConfigurer {
 
 	/*
 	* 全局CORS配置
+	*
+	* 但是问题是，当你在项目中使用了该方法配置跨域问题后，再使用自定义的拦截器时，跨域问题的相关配置就会失效，请求依然会报跨域问题的错。
+	原因是客户端请求经过的先后顺序问题，当服务端接收到一个请求时，该请求会先经过过滤器，然后进入拦截器中，
+	* 然后再进入Mapping映射中的路径所指向的资源，所以跨域配置在mapping上并不起作用，返回的头信息中并没有配置的跨域信息，浏览器就会报跨域异常。
 	* */
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**")
-				.allowedOriginPatterns("*")
-				.allowedHeaders(CorsConfiguration.ALL)
-				.allowedMethods(CorsConfiguration.ALL)
-				.allowCredentials(true)
-				.maxAge(3600); // 1小时内不需要再预检（发OPTIONS请求）
-	}
+//	@Override
+//	public void addCorsMappings(CorsRegistry registry) {
+//		registry.addMapping("/**")
+//				.allowedOriginPatterns("*")
+//				.allowedHeaders(CorsConfiguration.ALL)
+//				.allowedMethods(CorsConfiguration.ALL)
+//				.allowCredentials(true)
+//				.maxAge(3600); // 1小时内不需要再预检（发OPTIONS请求）
+//
+//	}
 
 	/*
 	* 为了避免后端long类型【有的long有16为多。。。】传递到前端时，由于格式问题导致显示不正常

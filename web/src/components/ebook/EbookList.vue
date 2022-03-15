@@ -63,7 +63,7 @@
                     url: '/wiki/ebook/list'
                 }).then(function (response) {
                     listData.books = response.data.data;
-                    console.log(listData);
+                    // console.log(listData);
                 })
 
             })
