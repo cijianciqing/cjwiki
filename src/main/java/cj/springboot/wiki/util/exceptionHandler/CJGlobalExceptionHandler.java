@@ -2,12 +2,14 @@ package cj.springboot.wiki.util.exceptionHandler;
 
 import cn.com.ns.cj.cjuniversalspringbootstarter.returnData.CJAjaxResult;
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.context.annotation.Profile;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -23,6 +25,14 @@ public class CJGlobalExceptionHandler {
 //    @Autowired
 //    CJLogService cjLogService;
 
+
+    /*mybatis相关错误*/
+    @ExceptionHandler(MyBatisSystemException.class)
+    @ResponseBody
+    public String cjDB(MyBatisSystemException e, HttpServletRequest request) {
+        log.info("数据库连接错误1：",e.getMessage(),e.getClass());
+        return "CJError";
+    }
 
     /*校验错误处理*/
 //    @ExceptionHandler(MethodArgumentNotValidException.class)

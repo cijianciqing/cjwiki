@@ -2,9 +2,7 @@
     <a-layout-header class="header">
         <div class="logo"/>
         <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' ,display: 'block'}">
-<!--            <a-menu-item key="1">nav1 11</a-menu-item>-->
-<!--            <a-menu-item key="2">nav 2</a-menu-item>-->
-<!--            <a-menu-item key="3">nav 3</a-menu-item>-->
+
             <a-menu-item key="/">
                 <router-link to="/">首页</router-link>
             </a-menu-item>
@@ -28,9 +26,9 @@
                     <span>退出登录</span>
                 </a>
             </a-popconfirm>
-            <a class="login-menu" v-show="user.id">
-                <span>您好：{{user.username}}</span>
+            <a class="login-menu" v-show="user.id" v-text="'您好：'+user.username">
             </a>
+            <!--    如果使用如下格式，登录后不自动显示用户昵称            <span>您好：{{user.username}}</span>-->
             <a class="login-menu" v-show="!user.id" @click="showLoginModal">
                 <span>登录</span>
             </a>
@@ -62,6 +60,7 @@
     import { message } from 'ant-design-vue';
     import { useStore } from 'vuex'
     import qs from 'qs'
+    import cjStore from "@/store";
 
     export default {
         name: "GlobalHeader",
@@ -108,7 +107,7 @@
                     if (data.code == process.env.VUE_APP_ResponseSuccess){
                         loginModalVisible.value = false;
                         message.success("登录成功！");
-
+                        axios.defaults.headers.common['token'] = data.data.token
                         store.commit("setUser", data.data);
                     } else {
 
@@ -135,7 +134,7 @@
                     if (data.code == process.env.VUE_APP_ResponseSuccess){
                         loginModalVisible.value = false;
                         message.success("CJ退出成功！");
-
+                        axios.defaults.headers.common['token'] = ""
                         store.commit("delUser", data.data);
                     } else {
                         message.error(data.msg);

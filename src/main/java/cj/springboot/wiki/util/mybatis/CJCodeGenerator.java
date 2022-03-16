@@ -1,5 +1,7 @@
 package cj.springboot.wiki.util.mybatis;
 
+import cj.springboot.wiki.config.mybatis.CJBaseColmns;
+import cj.springboot.wiki.config.mybatis.CJMapper;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
@@ -22,11 +24,11 @@ public class CJCodeGenerator {
     private static final String JDBC_PASSOWRD = "wqn641214";
 
     // 包名和模块名
-    private static final String PACKAGE_NAME = "cj.springboot";
-    private static final String MODULE_NAME = "wiki";
+    private static final String PACKAGE_NAME = "cj.springboot.wiki";
+    private static final String MODULE_NAME = "article";
 
     // 表名，多个表使用英文逗号分割
-    private static final String[] TBL_NAMES = { "category" };
+    private static final String[] TBL_NAMES = { "cj_article", "cj_article_category","cj_uploaded_file" };
 
     // 表名的前缀，从表生成代码时会去掉前缀
     private static final String TABLE_PREFIX = "";
@@ -77,16 +79,20 @@ public class CJCodeGenerator {
         // 6.1.Entity策略配置
         // 生成实体时生成字段的注解，包括@TableId注解等
         // 数据库表和字段映射到实体的命名策略，为下划线转驼峰
-        // 全局主键类型为None
         // 实体名称格式化为XXXEntity
         fastAutoGenerator.strategyConfig(strategyConfigBuilder -> strategyConfigBuilder.entityBuilder()
-                .enableTableFieldAnnotation().naming(NamingStrategy.underline_to_camel)
-                .columnNaming(NamingStrategy.underline_to_camel).idType(IdType.NONE).formatFileName("%sEntity"));
+                .idType(IdType.ASSIGN_ID)//默认实现类 {@link com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator}(雪花算法)
+                .superClass(CJBaseColmns.class)//设置父类和自动注入的字段
+                .addIgnoreColumns("createTime","updateTime","flag")//将父类总的字段取消
+                .enableTableFieldAnnotation()
+                .naming(NamingStrategy.underline_to_camel)//驼峰命名
+                .columnNaming(NamingStrategy.underline_to_camel).formatFileName("%sEntity"));
 
         // 6.2.Controller策略配置
         // 开启生成@RestController控制器
         fastAutoGenerator
-                .strategyConfig(strategyConfigBuilder -> strategyConfigBuilder.controllerBuilder().enableRestStyle());
+                .strategyConfig(strategyConfigBuilder -> strategyConfigBuilder.controllerBuilder()
+                        .enableRestStyle());
 
         // 6.3.Service策略配置
         // 格式化service接口和实现类的文件名称，去掉默认的ServiceName前面的I
@@ -96,6 +102,8 @@ public class CJCodeGenerator {
         // 6.4.Mapper策略配置
         // 格式化 mapper文件名,格式化xml实现类文件名称
         fastAutoGenerator.strategyConfig(strategyConfigBuilder -> strategyConfigBuilder.mapperBuilder()
+                .superClass(CJMapper.class)
+
                 .formatMapperFileName("%sDao").formatXmlFileName("%sDao"));
 
         // 7.生成代码

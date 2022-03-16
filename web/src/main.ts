@@ -15,7 +15,7 @@ import axios from 'axios';
 axios.defaults.baseURL = process.env.VUE_APP_BackEndServer;
 //表示跨域请求时是否需要使用凭证
 axios.defaults.withCredentials = true;
-//
+//axios的全局设置不会随着store中数据的变化而变化，需要在后续登录和退出是进行设置
 axios.defaults.headers.common['token'] = cjStore.state.user.token == undefined ? "" : cjStore.state.user.token
 
 /**
