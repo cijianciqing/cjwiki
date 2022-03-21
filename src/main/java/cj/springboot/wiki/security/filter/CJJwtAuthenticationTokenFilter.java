@@ -64,7 +64,7 @@ public class CJJwtAuthenticationTokenFilter extends OncePerRequestFilter {
         CJUser loginUser = redisCache.getCacheObject(redisKey);
         if(Objects.isNull(loginUser)){
             log.info("CJJwtAuthenticationTokenFilter....用户未登录....");
-            throw new RuntimeException("用户未登录");
+            throw new RuntimeException("CJ用户未登录");
         }
         //更新过期时间
         redisCache.expire(redisKey, 1, TimeUnit.HOURS);

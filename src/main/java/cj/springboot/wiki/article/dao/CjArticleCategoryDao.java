@@ -9,7 +9,7 @@ import cj.springboot.wiki.config.mybatis.CJMapper;
  * </p>
  *
  * @author cj
- * @since 2022-03-16
+ * @since 2022-03-17
  */
 public interface CjArticleCategoryDao extends CJMapper<CjArticleCategoryEntity> {
 

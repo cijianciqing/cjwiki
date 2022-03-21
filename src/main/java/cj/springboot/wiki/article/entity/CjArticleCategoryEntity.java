@@ -1,6 +1,7 @@
 package cj.springboot.wiki.article.entity;
 
 import cj.springboot.wiki.config.mybatis.CJBaseColmns;
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -13,15 +14,15 @@ import java.io.Serializable;
  * </p>
  *
  * @author cj
- * @since 2022-03-16
+ * @since 2022-03-17
  */
 @TableName("cj_article_category")
 public class CjArticleCategoryEntity extends CJBaseColmns {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    private String id;
 
     @TableField("category_desc")
     private String categoryDesc;
@@ -29,20 +30,20 @@ public class CjArticleCategoryEntity extends CJBaseColmns {
     @TableField("`name`")
     private String name;
 
-    @TableField("sortNo")
+    @TableField(value = "sort_no", fill = FieldFill.INSERT)
     private Integer sortNo;
 
     @TableField("parent_id")
-    private Long parentId;
+    private String parentId;
 
     @TableField("fontIcon")
     private String fontIcon;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
     public String getCategoryDesc() {
@@ -66,11 +67,11 @@ public class CjArticleCategoryEntity extends CJBaseColmns {
     public void setSortNo(Integer sortNo) {
         this.sortNo = sortNo;
     }
-    public Long getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(String parentId) {
         this.parentId = parentId;
     }
     public String getFontIcon() {

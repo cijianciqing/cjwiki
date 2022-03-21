@@ -5,15 +5,38 @@
 
 
 
-    <!--  CJArticleCategory To CJViewArticleCategory -->
-    <!--<mapping>
-        <class-a>nanshan.cj.learningnotes.entity.CJArticleCategory</class-a>
-        <class-b>nanshan.cj.learningnotes.dao.dto.CJViewArticleCategory</class-b>
+    <!--  CjArticleCategoryTransfer To CJVueTreeNode -->
+    <mapping>
+        <class-a>cj.springboot.wiki.article.dto.CjArticleCategoryTransfer</class-a>
+        <class-b>cj.springboot.wiki.antvue.dto.CJVueTreeNode</class-b>
         <field>
-            <a>parent.id</a>
-            <b>pid</b>
+            <a>id</a>
+            <b>key</b>
         </field>
-    </mapping>-->
+        <field>
+            <a>name</a>
+            <b>title</b>
+        </field>
+    </mapping>
+
+    <!--  CjArticleCategoryTransfer To CJVueTreeNode -->
+    <mapping>
+        <class-a>cj.springboot.wiki.article.dto.CjArticleCategoryTransfer</class-a>
+        <class-b>cj.springboot.wiki.antvue.treeSelect.CJVueTreeSelectNode</class-b>
+        <field>
+            <a>id</a>
+            <b>key</b>
+        </field>
+        <field>
+            <a>name</a>
+            <b>title</b>
+        </field>
+        <field>
+            <a>id</a>
+            <b>value</b>
+        </field>
+
+    </mapping>
 
     <!--  CJArticle To CJViewArticle -->
    <!-- <mapping>

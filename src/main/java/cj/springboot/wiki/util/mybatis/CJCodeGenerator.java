@@ -2,6 +2,7 @@ package cj.springboot.wiki.util.mybatis;
 
 import cj.springboot.wiki.config.mybatis.CJBaseColmns;
 import cj.springboot.wiki.config.mybatis.CJMapper;
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
@@ -12,6 +13,7 @@ import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.baomidou.mybatisplus.generator.fill.Column;
 import com.baomidou.mybatisplus.generator.keywords.MySqlKeyWordsHandler;
 
 import java.util.Collections;
@@ -85,6 +87,7 @@ public class CJCodeGenerator {
                 .superClass(CJBaseColmns.class)//设置父类和自动注入的字段
                 .addIgnoreColumns("createTime","updateTime","flag")//将父类总的字段取消
                 .enableTableFieldAnnotation()
+                .addTableFills(new Column("sort_no", FieldFill.INSERT))
                 .naming(NamingStrategy.underline_to_camel)//驼峰命名
                 .columnNaming(NamingStrategy.underline_to_camel).formatFileName("%sEntity"));
 

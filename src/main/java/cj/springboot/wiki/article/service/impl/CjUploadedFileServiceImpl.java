@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author cj
- * @since 2022-03-16
+ * @since 2022-03-17
  */
 @Service
 public class CjUploadedFileServiceImpl extends ServiceImpl<CjUploadedFileDao, CjUploadedFileEntity> implements CjUploadedFileService {

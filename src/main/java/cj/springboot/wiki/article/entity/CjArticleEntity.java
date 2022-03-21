@@ -13,15 +13,15 @@ import java.io.Serializable;
  * </p>
  *
  * @author cj
- * @since 2022-03-16
+ * @since 2022-03-17
  */
 @TableName("cj_article")
 public class CjArticleEntity extends CJBaseColmns {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    private String id;
 
     @TableField("articleDesc")
     private String articleDesc;
@@ -38,11 +38,11 @@ public class CjArticleEntity extends CJBaseColmns {
     @TableField("article_state")
     private String articleState;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
     public String getArticleDesc() {

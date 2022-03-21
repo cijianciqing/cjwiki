@@ -1,5 +1,5 @@
 <template>
-    <a-layout-header class="header">
+    <a-layout-header class="header" >
         <div class="logo"/>
         <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' ,display: 'block'}">
 

@@ -1,22 +1,23 @@
 <template>
-    <a-layout-content style="padding: 0 50px">
-        <a-layout style="padding: 24px 0; background: #fff">
-            <a-layout-sider width="200" style="background: #fff">
-                <ArticleCategoryTree />
-            </a-layout-sider>
-            <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
-                <ArticleTable />
+    <a-layout style="padding: 20px">
+        <a-layout-sider :style="{width:'20%', overflow: 'auto',  background: '#c61818', height: 'calc(100vh - 100px)', left: 0 }">
+            <ArticleCategoryTree/>
+        </a-layout-sider>
+        <a-layout>
+            <a-layout-content :style="{ width:'80%',marginLeft: '200px' }">
+                <ArticleTable/>
             </a-layout-content>
         </a-layout>
-    </a-layout-content>
+    </a-layout>
 </template>
 
 <script>
-    import ArticleCategoryTree  from "@/components/article/ArticleCategoryTree.vue";
-    import ArticleTable from "@/components/category/ArticleTable.vue";
+    import ArticleCategoryTree from "@/components/article/ArticleCategoryTree.vue";
+    import ArticleTable from "@/components/article/ArticleTable.vue";
+
     export default {
         name: "ArticleAdmin",
-        components:{
+        components: {
             ArticleCategoryTree,
             ArticleTable
         }

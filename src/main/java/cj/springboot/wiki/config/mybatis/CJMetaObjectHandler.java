@@ -24,6 +24,7 @@ public class CJMetaObjectHandler implements MetaObjectHandler {
         this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now());
         this.strictInsertFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
         this.strictInsertFill(metaObject, "flag", Boolean.class, false);
+        this.strictInsertFill(metaObject, "sortNo", Integer.class, 0);
 
 //        if (metaObject.hasGetter("createTime") && metaObject.hasGetter("updateTime")) {
 //            setFieldValByName("createTime", new Date(), metaObject);

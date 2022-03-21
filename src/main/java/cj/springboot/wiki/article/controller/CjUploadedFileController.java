@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author cj
- * @since 2022-03-16
+ * @since 2022-03-17
  */
 @RestController
-@RequestMapping("/wiki/article/uploaded")
+@RequestMapping("/article/cj-uploaded-file-entity")
 public class CjUploadedFileController {
 
 }

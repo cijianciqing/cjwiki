@@ -13,14 +13,14 @@ import java.io.Serializable;
  * </p>
  *
  * @author cj
- * @since 2022-03-16
+ * @since 2022-03-17
  */
 @TableName("cj_uploaded_file")
 public class CjUploadedFileEntity extends CJBaseColmns {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     @TableField("fileName")
