@@ -19,5 +19,8 @@ module.exports = {
     'vue/no-unused-vars':0,//引用但未使用的变量
     '@typescript-eslint/no-explicit-any':0,//warning  Unexpected any. Specify a different type
     "@typescript-eslint/explicit-module-boundary-types": "off", // ts每个函数都要显式声明返回值
+    "@typescript-eslint/ban-types": "off",//E:\java\cjProject\cjWiki\web\src\util\tool.ts: Don't use `object` as a type. The `object` type is currently hard to use
+
+
   }
 }

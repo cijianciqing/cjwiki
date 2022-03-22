@@ -48,12 +48,15 @@
             </a-space>
         </template>
     </a-table>
+
     <a-modal
             title="Article新增表单"
             v-model:visible="modalVisible"
             :confirm-loading="modalLoading"
             @ok="handleModalOk"
             @cancel="handleCancel"
+            width="100%"
+            wrapClassName="full-modal"
     >
         <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
             <a-form-item label="名称">
@@ -80,11 +83,13 @@
 
                 </a-radio-group>
             </a-form-item>
+            <a-form-item label="内容">
+                <div id="wangEditor">
+                    <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
+                </div>
+            </a-form-item>
         </a-form>
-       <!-- <textarea name="cjArticleAddContent"  id="cjArticleAddContent" ref="cjCKEditor"
-                  v-model="editorData">
 
-            </textarea>-->
     </a-modal>
 
     <a-modal
@@ -139,27 +144,23 @@
     import {message} from 'ant-design-vue';
     import {Tool} from "@/util/tool";
     import {TreeDataItem} from "ant-design-vue/es/tree/Tree";
-    import { useStore } from 'vuex'
+    import {useStore} from 'vuex'
+    import E from 'wangeditor'
 
     export default defineComponent({
         name: "ArticleTable",
-        components:{
-        },
+        components: {},
         setup: function () {
             const store = useStore()
 
-            const editorData= '<p>Content of the editor.</p>';
-            const cjCKEditor = ref(null);
-            // const editorConfig =  {
-            //     // The configuration of the editor.
-            // }
-            //初始化ckeditor
-            // const cjCKEditor01 = window.CKEDITOR.replace(cjCKEditor, {
-            //     width: '100%',
-            //     extraPlugins: 'codesnippet',
-            //     codeSnippet_theme: 'monokai_sublime',
-            // });
 
+            //创建wangEditor
+            let wangEditor: any;
+            const createWangEditor = () => {
+                wangEditor = new E("#wangEditor")
+                wangEditor.create()
+                wangEditor.config.uploadImgServer = '/upload-img'
+            }
 
             const loading = ref(false);
             const columns = [
@@ -189,7 +190,6 @@
             ];
 
 
-
             //数据源需要array 而不是 object
             const ebooks = ref([]);
 
@@ -201,7 +201,7 @@
             //查询的参数
             const param = reactive({
                 name: "",
-                categoryId:  computed(() => {
+                categoryId: computed(() => {
                     return store.state.selectedNode.eventKey
                 }),
                 cjPageReq: {
@@ -210,17 +210,17 @@
                 }
             });
 
-            watch(()=> param.categoryId,(newVal,oldVal)=>{
+            watch(() => param.categoryId, (newVal, oldVal) => {
                 console.log(newVal)
                 handleQuery(param);
             })
 
 
-
             onMounted(() => {
                 // console.log("EbookTable mounted......")
                 handleQuery(param);
-                // getArticleStates();
+
+
             });
 
 
@@ -272,11 +272,10 @@
             };
 
 
-
             /*
         * radio 组件
         * */
-            const articleStates = ref( []);
+            const articleStates = ref([]);
             const getArticleStates = () => {
                 axios.get("/wiki/article/article/sate"
                 ).then((response) => {
@@ -308,44 +307,60 @@
             };
 
 
-
-
-
             /**
              * 新增ebook
              */
-            // -------- 表单内容 ---------
-            const ebook = reactive({data: {
-                        categoryId:  computed(() => {
+                // -------- 表单内容 ---------
+            const ebook = reactive({
+                    data: {
+                        categoryId: computed(() => {
                             return store.state.selectedNode.eventKey
                         }),
-                    }});
+                        content: "",
+
+                    }
+                });
             const modalVisible = ref(false);
             const modalLoading = ref(false);
-
 
 
             const add = () => {
                 modalVisible.value = true;
                 getArticleStates();
                 getAllCategories();
+                setTimeout(function () {
+                    if (wangEditor == null) {
+                        createWangEditor();
+                    }else {
+                        wangEditor.destroy();//这里做了一次判断，判断编辑器是否被创建，如果创建了就先销毁。
+                        createWangEditor();
+                    }
+                },200)
+
             };
             const handleCancel = () => {
-               clearModalAdd()
+                clearModalAdd()
             };
 
-            function clearModalAdd(){
+            function clearModalAdd() {
                 modalVisible.value = false;
-                ebook.data = {categoryId: computed(() => {
+                ebook.data = {
+                    content: "",
+                    categoryId: computed(() => {
                         return store.state.selectedNode.eventKey
-                    })};
-                articleStates.value=[]
-                treeSelectData.value=[]
+                    })
+                };
+                articleStates.value = []
+                treeSelectData.value = []
             }
 
             const handleModalOk = () => {
                 modalLoading.value = true;
-                console.log("ebook.data: ",ebook.data);
+                // console.log("wangEditor.txt.text():" ,wangEditor.txt.text())
+                // console.log("wangEditor.html():" ,wangEditor.html())--不存在
+                // console.log("wangEditor.txt.html():" ,wangEditor.txt.html())
+                ebook.data.content = wangEditor.txt.html()
+                console.log("ebook.data: ", ebook.data);
                 axios.post("/wiki/article/article/save", ebook.data).then((response) => {
                     modalLoading.value = false;
                     const data = response.data; // data = commonResp
@@ -357,7 +372,7 @@
                     } else {
                         message.error(data.msg);
                     }
-                }).finally(()=>{
+                }).finally(() => {
                     clearModalAdd()
                 });
             };
@@ -376,12 +391,14 @@
                 getAllCategories();
 
             };
-            function clearModalEdit(){
+
+            function clearModalEdit() {
                 modalVisible2.value = false;
                 article.data = {};
-                articleStates.value=[]
-                treeSelectData.value=[]
+                articleStates.value = []
+                treeSelectData.value = []
             }
+
             const handleCancel2 = () => {
                 clearModalEdit()
             };
@@ -400,7 +417,7 @@
                     } else {
                         message.error(data.msg);
                     }
-                }).finally(()=>{
+                }).finally(() => {
                     clearModalEdit()
                 });
             };
@@ -420,7 +437,7 @@
 
                 articleStates,
                 treeSelectData,
-               //新增表单
+                //新增表单
                 add,
                 ebook: toRef(ebook, 'data'),
                 modalVisible,
@@ -438,17 +455,32 @@
                 handleCancel2,
 
                 //ckeditor data
-                editorData,
             };
         },
 
     });
 </script>
-<style scoped>
+
+<style lang="less" scoped>
     img {
         width: 50px;
         height: 50px;
     }
+    .full-modal {
+        .ant-modal {
+            max-width: 100%;
+            top: 0;
+            padding-bottom: 0;
+            margin: 0;
+        }
+        .ant-modal-content {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh);
+        }
+        .ant-modal-body {
+            flex: 1;
+        }
+    }
 </style>
-
 
