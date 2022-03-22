@@ -6,20 +6,20 @@ const CJUSER = "CJUSER";
 export const cjStore = createStore({
     state: {
         user: CJSessionStorage.get(CJUSER) || {},
-        // articleTable:[],
-        categoryId:"1"
+
+        selectedNode:{eventKey:"1",title:'cjroot'}
     },
     mutations: {
         /*
         * 登录、登出设置
         * */
         setUser(state, user) {
-            console.log("store set user：", user);
+            // console.log("store set user：", user);
             state.user = user;
             CJSessionStorage.set(CJUSER, user);
         },
         delUser(state) {
-            console.log("store del user：");
+            // console.log("store del user：");
             state.user = {};
             CJSessionStorage.remove(CJUSER);
         },
@@ -27,10 +27,10 @@ export const cjStore = createStore({
         /*
        * article与category之间的交互
        * */
-        setCategoryId(state, CategoryId) {
-            console.log("store  setCategoryId：", CategoryId);
-            state.categoryId = CategoryId;
+        setSelectNode(state, selectedNode) {
+            state.selectedNode = selectedNode;
         },
+
 
     },
     actions: {},

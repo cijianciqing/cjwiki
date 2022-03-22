@@ -22,7 +22,7 @@ public interface CjArticleService extends IService<CjArticleEntity> {
 
     List<CJArticleTransfer> getArticleTable(CJTableQueryReq tableQueryReq);
 
-    void delete(Long id);
+    void delete(String id);
 
     void save(CjArticleSaveRequest req);
 }

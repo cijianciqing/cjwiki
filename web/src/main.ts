@@ -11,6 +11,8 @@ import 'ant-design-vue/dist/antd.css'
 import * as Icons from '@ant-design/icons-vue'
 
 import axios from 'axios';
+
+
 //axios配置baseURL
 axios.defaults.baseURL = process.env.VUE_APP_BackEndServer;
 //表示跨域请求时是否需要使用凭证
@@ -49,6 +51,7 @@ const app = createApp(App);
 app.use(cjStore)
     .use(router)
     .use(Antd)
+    // .use()
     .mount('#app')
 
 // 全局使用图标

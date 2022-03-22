@@ -10,6 +10,7 @@
     <select id="getArticlesByRequest" resultType="cj.springboot.wiki.article.entity.CjArticleEntity">
         select * from cj_article
         WHERE FIND_IN_SET(category_id,queryChildrenCategoriesByTheId(#{categoryId}))
+        and flag = 0
         <if test="name != null and name != ''">
             AND name like "%"#{name}"%"
         </if>

@@ -49,10 +49,11 @@
         </template>
     </a-table>
     <a-modal
-            title="Article表单"
+            title="Article新增表单"
             v-model:visible="modalVisible"
             :confirm-loading="modalLoading"
             @ok="handleModalOk"
+            @cancel="handleCancel"
     >
         <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
             <a-form-item label="名称">
@@ -72,35 +73,67 @@
                         placeholder="Please select"
                         :show-line="true"
                 >
-                    <!--        v-model:selectedKeys="selectedKeys"-->
+                </a-tree-select>
+            </a-form-item>
+            <a-form-item label="状态">
+                <a-radio-group v-model:value="ebook.articleState" :options="articleStates" button-style="solid">
+
+                </a-radio-group>
+            </a-form-item>
+        </a-form>
+       <!-- <textarea name="cjArticleAddContent"  id="cjArticleAddContent" ref="cjCKEditor"
+                  v-model="editorData">
+
+            </textarea>-->
+    </a-modal>
+
+    <a-modal
+            title="Article编辑表单"
+            v-model:visible="modalVisible2"
+            :confirm-loading="modalLoading2"
+            @ok="handleModalOk2"
+            @cancel="handleCancel2"
+    >
+        <a-form :model="article" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+            <a-form-item label="名称">
+                <a-input v-model:value="article.name"/>
+            </a-form-item>
+            <a-form-item label="描述">
+                <a-input v-model:value="article.articleDesc" type="textarea"/>
+            </a-form-item>
+            <a-form-item label="分类">
+                <a-tree-select
+                        v-if="treeSelectData.length > 0"
+                        v-model:value="article.categoryId"
+
+                        :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+                        style="width: 100%"
+                        :tree-data="treeSelectData"
+                        tree-default-expand-all
+                        placeholder="Please select"
+                        :show-line="true"
+                >
+                    <!--                        :default-value="article.categoryId"-->
+                    <!--        v-model:selectedKeys="selectedKeys"
+                                :default-value="article.categoryId"
+                    -->
                     <!--    :show-icon="true"
                             :show-line="true"
                      -->
                 </a-tree-select>
             </a-form-item>
             <a-form-item label="状态">
-                <a-radio-group v-model:value="ebook.articleState" :options="articleStates" button-style="solid">
+                <a-radio-group v-model:value="article.articleState" :options="articleStates" button-style="solid">
 
-                    <!--                     <a-radio-button v-for="(value, key) in articleStates.value" :key="key" :value="value">{{key}}</a-radio-button>-->
-                    <!--                     <a-radio-button value="b">Shanghai</a-radio-button>-->
-                    <!--                     <a-radio-button value="c">Beijing</a-radio-button>-->
-                    <!--                     <a-radio-button value="d">Chengdu</a-radio-button>-->
                 </a-radio-group>
             </a-form-item>
 
         </a-form>
     </a-modal>
 
-    <!--  <a-button type="primary" @click="showModal">Open Modal</a-button>
-      <a-modal v-model:visible="visible1" title="Basic Modal" @ok="handleOk1">
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-      </a-modal>-->
 </template>
 
 <script lang="ts">
-    // import {SmileOutlined, DownOutlined} from '@ant-design/icons-vue';
     import {defineComponent, reactive, ref, onMounted, toRef, computed, watch} from 'vue';
     import axios from "axios";
     import {message} from 'ant-design-vue';
@@ -108,19 +141,28 @@
     import {TreeDataItem} from "ant-design-vue/es/tree/Tree";
     import { useStore } from 'vuex'
 
-
     export default defineComponent({
         name: "ArticleTable",
+        components:{
+        },
         setup: function () {
             const store = useStore()
 
+            const editorData= '<p>Content of the editor.</p>';
+            const cjCKEditor = ref(null);
+            // const editorConfig =  {
+            //     // The configuration of the editor.
+            // }
+            //初始化ckeditor
+            // const cjCKEditor01 = window.CKEDITOR.replace(cjCKEditor, {
+            //     width: '100%',
+            //     extraPlugins: 'codesnippet',
+            //     codeSnippet_theme: 'monokai_sublime',
+            // });
+
+
             const loading = ref(false);
             const columns = [
-                // {
-                //     title: '封面',
-                //     dataIndex: 'cover',
-                //     slots: { customRender: 'cover1' }
-                // },
                 {
                     title: '名称',
                     dataIndex: 'name',
@@ -150,7 +192,6 @@
 
             //数据源需要array 而不是 object
             const ebooks = ref([]);
-            // reactive({data: []});
 
             let pagination = reactive({
                 current: 1,
@@ -161,7 +202,7 @@
             const param = reactive({
                 name: "",
                 categoryId:  computed(() => {
-                    return store.state.categoryId
+                    return store.state.selectedNode.eventKey
                 }),
                 cjPageReq: {
                     page: pagination.current,
@@ -175,23 +216,6 @@
             })
 
 
-            // param.categoryId = computed(() => {
-            //     return store.state.categoryId
-            // }).value
-
-
-            // 直接显示当前user,登录后更新user
-            // const ebooks = computed(() =>{
-            //     // console.log("computed change",user)
-            //     return store.state.articleTable
-            // })
-
-
-
-            // watch(() => store.state., (newValue, oldValue) => { //直接监听
-            //     console.log("categoryId changed");
-            //     handleQuery(param);
-            // });
 
             onMounted(() => {
                 // console.log("EbookTable mounted......")
@@ -248,40 +272,30 @@
             };
 
 
-            // -------- 表单内容 ---------
-            const ebook = reactive({data: {}});
-            const modalVisible = ref(false);
-            const modalLoading = ref(false);
 
-            /**
-             * 新增ebook
-             */
-
-            const add = () => {
-                modalVisible.value = true;
-                ebook.data = {};
-                getArticleStates();
-                getAllCategories();
-            };
-
-            const articleStates = reactive({data: []});
+            /*
+        * radio 组件
+        * */
+            const articleStates = ref( []);
             const getArticleStates = () => {
                 axios.get("/wiki/article/article/sate"
                 ).then((response) => {
                     loading.value = false;
                     const data = response.data;
                     if (data.code == process.env.VUE_APP_ResponseSuccess) {
-                        articleStates.data = data.data;
+                        articleStates.value = data.data;
                         console.log("articleStates:", articleStates);
                     } else {
                         message.error(data.msg);
                     }
                 });
             }
+            /*
+           * tree-select 组件
+           * */
 
             const treeSelectData = ref<TreeDataItem[]>([]);
             const getAllCategories = () => {
-
                 axios.post("/wiki/article/category/treeSelect"
                 ).then((response) => {
                     const data = response.data;
@@ -292,16 +306,46 @@
                     }
                 });
             };
+
+
+
+
+
             /**
-             * 编辑ebook
+             * 新增ebook
              */
-            const edit = (record: any) => {
+            // -------- 表单内容 ---------
+            const ebook = reactive({data: {
+                        categoryId:  computed(() => {
+                            return store.state.selectedNode.eventKey
+                        }),
+                    }});
+            const modalVisible = ref(false);
+            const modalLoading = ref(false);
+
+
+
+            const add = () => {
                 modalVisible.value = true;
-                console.log("edit.....record............", record)
-                ebook.data = Tool.copy(record);//复制数据，不影响源数据
+                getArticleStates();
+                getAllCategories();
             };
+            const handleCancel = () => {
+               clearModalAdd()
+            };
+
+            function clearModalAdd(){
+                modalVisible.value = false;
+                ebook.data = {categoryId: computed(() => {
+                        return store.state.selectedNode.eventKey
+                    })};
+                articleStates.value=[]
+                treeSelectData.value=[]
+            }
+
             const handleModalOk = () => {
                 modalLoading.value = true;
+                console.log("ebook.data: ",ebook.data);
                 axios.post("/wiki/article/article/save", ebook.data).then((response) => {
                     modalLoading.value = false;
                     const data = response.data; // data = commonResp
@@ -313,26 +357,53 @@
                     } else {
                         message.error(data.msg);
                     }
+                }).finally(()=>{
+                    clearModalAdd()
                 });
+            };
+            /**
+             * 编辑ebook
+             */
+                // -------- 表单内容 ---------
+            const article = reactive({data: {}});
+            const modalVisible2 = ref(false);
+            const modalLoading2 = ref(false);
+            const edit = (record: any) => {
+                modalVisible2.value = true;
+                console.log("edit.....record............", record)
+                article.data = Tool.copy(record);//复制数据，不影响源数据
+                getArticleStates();
+                getAllCategories();
+
+            };
+            function clearModalEdit(){
+                modalVisible2.value = false;
+                article.data = {};
+                articleStates.value=[]
+                treeSelectData.value=[]
+            }
+            const handleCancel2 = () => {
+                clearModalEdit()
             };
 
 
-            /*
-            * 测试
-            *
-            * */
+            const handleModalOk2 = () => {
+                modalLoading2.value = true;
+                axios.post("/wiki/article/article/save", article.data).then((response) => {
+                    modalLoading2.value = false;
+                    const data = response.data; // data = commonResp
+                    if (data.code == process.env.VUE_APP_ResponseSuccess) {
+                        modalVisible2.value = false;
 
-            //modal测试
-            // const visible1 = ref(false);
-            //
-            // const showModal = () => {
-            //     visible1.value = true;
-            // };
-            //
-            // const handleOk = (e: MouseEvent) => {
-            //     console.log(e);
-            //     visible1.value = false;
-            // };
+                        // 重新加载列表，有可能是添加
+                        handleQuery(param);
+                    } else {
+                        message.error(data.msg);
+                    }
+                }).finally(()=>{
+                    clearModalEdit()
+                });
+            };
 
             return {
                 param,
@@ -346,20 +417,28 @@
 
                 handleTableChange,
 
+
+                articleStates,
+                treeSelectData,
+               //新增表单
+                add,
                 ebook: toRef(ebook, 'data'),
                 modalVisible,
                 modalLoading,
                 handleModalOk,
-                add,
+                handleCancel,
+
+
+                //编辑表单
                 edit,
+                article: toRef(article, 'data'),
+                modalVisible2,
+                modalLoading2,
+                handleModalOk2,
+                handleCancel2,
 
-                articleStates: toRef(articleStates, 'data'),
-                treeSelectData,
-                //测试数据
-                // visible1,
-                // showModal,
-                // handleOk,
-
+                //ckeditor data
+                editorData,
             };
         },
 

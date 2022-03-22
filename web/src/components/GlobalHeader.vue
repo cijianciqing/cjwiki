@@ -1,5 +1,5 @@
 <template>
-    <a-layout-header class="header" >
+
         <div class="logo"/>
         <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' ,display: 'block'}">
 
@@ -38,7 +38,7 @@
 
         </a-menu>
 
-    </a-layout-header>
+
 
     <a-modal
             title="登录"
@@ -170,5 +170,6 @@
         float: right;
         color: white;
         padding-left: 10px;
+        margin-right: 10px;
     }
 </style>

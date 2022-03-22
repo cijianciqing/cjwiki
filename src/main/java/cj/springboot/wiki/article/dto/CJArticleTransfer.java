@@ -17,4 +17,6 @@ public class CJArticleTransfer {
 
     private String articleState;
 
+    private String categoryId;
+
 }

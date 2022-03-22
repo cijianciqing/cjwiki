@@ -63,7 +63,7 @@ public class CjArticleServiceImpl extends ServiceImpl<CjArticleDao, CjArticleEnt
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(String id) {
         cjArticleDao.deleteById(id);
     }
 

@@ -72,9 +72,9 @@
 
             const cjSelectEvent = function(selectedKeys : string[], e:{selected: boolean, selectedNodes: any, node: any, event: any}){
                 console.log("selectedKeys: ",selectedKeys)
-                console.log("selectedKeys[0]: ",selectedKeys[0])
-                store.commit("setCategoryId", selectedKeys[0]);
-
+                console.log("selectednode: ",e.node)
+                console.log("selectednode: ",e.node.title)
+                store.commit("setSelectNode", e.node);
             }
 
             return {

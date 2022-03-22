@@ -80,7 +80,7 @@ public class CjArticleController {
 
     //删除特定article
     @DeleteMapping("/delete/{id}")
-    public CJAjaxResult delete(@PathVariable Long id) {
+    public CJAjaxResult delete(@PathVariable String id) {
         cjArticleService.delete(id);
         return CJAjaxResult.success("删除Ebook成功");
     }

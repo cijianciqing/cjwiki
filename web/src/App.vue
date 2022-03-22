@@ -1,16 +1,5 @@
 <template>
-    <a-layout>
-        <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
-            <GlobalHeader/>
-        </a-layout-header>
-        <a-layout-content :style="{ position: 'fixed',padding: '0 50px',  marginTop: '64px', bottom:'100px'}">
-            <router-view></router-view>
-        </a-layout-content>
-        <a-layout-footer style="text-align: center">
-            <GlobalFooter/>
-        </a-layout-footer>
-
-    </a-layout>
+    <router-view></router-view>
 </template>
 <script>
     import GlobalHeader from "./components/GlobalHeader.vue";

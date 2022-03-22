@@ -33,7 +33,7 @@ public class CjArticleEntity extends CJBaseColmns {
     private String name;
 
     @TableField("category_id")
-    private Long categoryId;
+    private String categoryId;
 
     @TableField("article_state")
     private String articleState;
@@ -66,11 +66,11 @@ public class CjArticleEntity extends CJBaseColmns {
     public void setName(String name) {
         this.name = name;
     }
-    public Long getCategoryId() {
+    public String getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Long categoryId) {
+    public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
     public String getArticleState() {
