@@ -32,6 +32,9 @@ public class CJJwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Value("${spring.application.name}")
     private String cjGlobalAppName;
 
+    @Value("${cj.web.security.user.redis.timetout}")
+    private int cjRedisUserTimeOut;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("CJJwtAuthenticationTokenFilter........");
@@ -67,7 +70,7 @@ public class CJJwtAuthenticationTokenFilter extends OncePerRequestFilter {
             throw new RuntimeException("CJ用户未登录");
         }
         //更新过期时间
-        redisCache.expire(redisKey, 1, TimeUnit.HOURS);
+        redisCache.expire(redisKey, cjRedisUserTimeOut, TimeUnit.HOURS);
         //存入SecurityContextHolder
         //TODO 获取权限信息封装到Authentication中
         UsernamePasswordAuthenticationToken authenticationToken =

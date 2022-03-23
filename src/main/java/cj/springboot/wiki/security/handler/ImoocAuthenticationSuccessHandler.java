@@ -38,6 +38,9 @@ public class ImoocAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
 	@Value("${spring.application.name}")
 	private String cjGlobalAppName;
 
+	@Value("${cj.web.security.user.redis.timetout}")
+	private int cjRedisUserTimeOut;
+
 	@Autowired
 	private CJDozerUtil cjDozerUtil;
 
@@ -73,8 +76,8 @@ public class ImoocAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
 		convertor.setToken(jwt);
 		String redisKey = "login" + cjGlobalAppName+ ":" + userId;
 		//authenticate存入redis--保留1小时
-//		cjRedisCache.setCacheObject(redisKey,loginUser,1, TimeUnit.HOURS	);
-		cjRedisCache.setCacheObject(redisKey,loginUser);
+		cjRedisCache.setCacheObject(redisKey,loginUser,cjRedisUserTimeOut, TimeUnit.HOURS);
+//		cjRedisCache.setCacheObject(redisKey,loginUser);
 		//把token响应给前端
 //		HashMap<String,Object> map = new HashMap<>();
 //		map.put("token",jwt);

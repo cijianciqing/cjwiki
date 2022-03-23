@@ -62,7 +62,7 @@ public class CjArticleController {
 
     //查询 article - table
     @PostMapping(value = "/table")
-    public CJAjaxResult getEbookList(@Validated @RequestBody CJTableQueryReq tableQueryReq){
+    public CJAjaxResult getEbookList(@Valid @RequestBody CJTableQueryReq tableQueryReq){
         List<CJArticleTransfer> artcleList = cjArticleService.getArticleTable(tableQueryReq);
         PageInfo<CJArticleTransfer> pageInfo = new PageInfo<>(artcleList);
 

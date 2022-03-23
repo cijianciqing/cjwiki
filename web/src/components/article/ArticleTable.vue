@@ -409,24 +409,22 @@
 
             const handleModalOk = () => {
                 modalLoading.value = true;
-                // console.log("wangEditor.txt.text():" ,wangEditor.txt.text())
-                // console.log("wangEditor.html():" ,wangEditor.html())--不存在
-                // console.log("wangEditor.txt.html():" ,wangEditor.txt.html())
                 ebook.data.content = wangEditor.txt.html()
                 console.log("ebook.data: ", ebook.data);
                 axios.post("/wiki/article/article/save", ebook.data).then((response) => {
-                    modalLoading.value = false;
+
                     const data = response.data; // data = commonResp
                     if (data.code == process.env.VUE_APP_ResponseSuccess) {
                         modalVisible.value = false;
-
+                        clearModalAdd()
                         // 重新加载列表，有可能是添加
                         handleQuery(param);
                     } else {
                         message.error(data.msg);
                     }
                 }).finally(() => {
-                    clearModalAdd()
+
+                    modalLoading.value = false;
                 });
             };
             /**
@@ -471,18 +469,19 @@
                 modalLoading2.value = true;
                 article.data.content = wangEditor2.txt.html()
                 axios.post("/wiki/article/article/save", article.data).then((response) => {
-                    modalLoading2.value = false;
+
                     const data = response.data; // data = commonResp
                     if (data.code == process.env.VUE_APP_ResponseSuccess) {
                         modalVisible2.value = false;
-
+                        clearModalEdit()
                         // 重新加载列表，有可能是添加
                         handleQuery(param);
                     } else {
                         message.error(data.msg);
                     }
                 }).finally(() => {
-                    clearModalEdit()
+                    modalLoading2.value = false;
+
                 });
             };
 

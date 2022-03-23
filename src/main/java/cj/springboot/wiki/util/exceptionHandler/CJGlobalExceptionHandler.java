@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -18,7 +19,8 @@ import java.util.Map;
 
 @Slf4j
 /*暂时禁用此功能，便于开发调试*/
-@Profile("pro")
+//@Profile("pro")
+@RestController
 @ControllerAdvice
 public class CJGlobalExceptionHandler {
 //
@@ -47,26 +49,41 @@ public class CJGlobalExceptionHandler {
         });
         return CJAjaxResult.error("cjValidateMessage",cjValidateErrors);
     }
-
-    /*全局异常处理*/
     @ExceptionHandler(Exception.class)
-    public String handleException(Exception e, HttpServletRequest request) {
+    public CJAjaxResult handleException(Exception e, HttpServletRequest request) {
 
-        Map<String, Object> map = new HashMap<>();
 
         //设置状态码
         //传入我们自己的错误状态码  4xx 5xx，否则就不会进入定制错误页面的解析流程
 
         /*
-        * 以下的代码是无意义的，在springboot2.5.7的默认返回中，这些信息都存在
-        * 这些只是我自己的一些测试
-        * */
-        request.setAttribute("javax.servlet.error.status_code", 500);
-        map.put("cjMessage", "cjGlobalMessage :" +e.getMessage() );
-        request.setAttribute("cjExceptionHandlerMessage", map);
+         * 以下的代码是无意义的，在springboot2.5.7的默认返回中，这些信息都存在
+         * 这些只是我自己的一些测试
+         * */
+
         //写入数据库
-        return "forward:/error";
+        return CJAjaxResult.error("申请有错误，联系管理员", e.getMessage());
     }
+
+    /*全局异常处理*/
+//    @ExceptionHandler(Exception.class)
+//    public String handleException(Exception e, HttpServletRequest request) {
+//
+//        Map<String, Object> map = new HashMap<>();
+//
+//        //设置状态码
+//        //传入我们自己的错误状态码  4xx 5xx，否则就不会进入定制错误页面的解析流程
+//
+//        /*
+//        * 以下的代码是无意义的，在springboot2.5.7的默认返回中，这些信息都存在
+//        * 这些只是我自己的一些测试
+//        * */
+//        request.setAttribute("javax.servlet.error.status_code", 500);
+//        map.put("cjMessage", "cjGlobalMessage :" +e.getMessage() );
+//        request.setAttribute("cjExceptionHandlerMessage", map);
+//        //写入数据库
+//        return "forward:/error";
+//    }
 
 
 }

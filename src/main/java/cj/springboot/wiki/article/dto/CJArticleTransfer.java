@@ -19,6 +19,7 @@ public class CJArticleTransfer {
 
     private String categoryId;
 
+    //当点击显示文章内容时，需要此字段
     private String content;
 
 }

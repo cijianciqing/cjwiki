@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -31,11 +33,14 @@ public class CjArticleSaveRequest  {
     private String articleDesc;
 
     private String content;
-    @NotNull(message = "【名称】不能为空")
+
+    @NotBlank(message = "【名称】不能为空")
     private String name;
-    @NotNull(message = "【分类】不能为空")
-    private Long categoryId;
-    @NotNull(message = "【状态】不能为空")
+
+    @NotBlank(message = "【分类】不能为空")
+    private String categoryId;
+
+    @NotBlank(message = "【状态】不能为空")
     private String articleState;
 
 
