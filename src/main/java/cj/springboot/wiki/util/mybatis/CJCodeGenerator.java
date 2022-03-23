@@ -27,10 +27,10 @@ public class CJCodeGenerator {
 
     // 包名和模块名
     private static final String PACKAGE_NAME = "cj.springboot.wiki";
-    private static final String MODULE_NAME = "article";
+    private static final String MODULE_NAME = "wangeditor";
 
     // 表名，多个表使用英文逗号分割
-    private static final String[] TBL_NAMES = { "cj_article", "cj_article_category","cj_uploaded_file" };
+    private static final String[] TBL_NAMES = { "cj_uploaded_file" };
 
     // 表名的前缀，从表生成代码时会去掉前缀
     private static final String TABLE_PREFIX = "";

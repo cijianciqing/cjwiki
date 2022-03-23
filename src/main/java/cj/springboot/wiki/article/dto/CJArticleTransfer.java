@@ -19,4 +19,6 @@ public class CJArticleTransfer {
 
     private String categoryId;
 
+    private String content;
+
 }

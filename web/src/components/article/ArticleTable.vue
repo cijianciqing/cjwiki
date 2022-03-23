@@ -32,6 +32,9 @@
         </template>
         <template v-slot:action="{ text, record }">
             <a-space size="small">
+                <a-button type="primary" shape="circle" @click="read(record)">
+                    <template #icon><ReadFilled /></template>
+                </a-button>
                 <a-button type="primary" @click="edit(record)">
                     编辑
                 </a-button>
@@ -98,6 +101,8 @@
             :confirm-loading="modalLoading2"
             @ok="handleModalOk2"
             @cancel="handleCancel2"
+            width="100%"
+            wrapClassName="full-modal"
     >
         <a-form :model="article" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
             <a-form-item label="名称">
@@ -132,8 +137,35 @@
 
                 </a-radio-group>
             </a-form-item>
+            <a-form-item label="内容">
+                <div id="wangEditor2">
 
+                </div>
+            </a-form-item>
         </a-form>
+    </a-modal>
+
+    <a-modal
+            title="Article查看表单"
+            v-model:visible="modalVisible3"
+            width="100%"
+            wrapClassName="full-modal"
+            :footer="null"
+    >
+        <a-form :model="readonly_article" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+            <a-form-item label="名称">
+                <a-input v-model:value="readonly_article.name"/>
+            </a-form-item>
+            <a-form-item label="描述">
+                <a-input v-model:value="readonly_article.articleDesc" type="textarea"/>
+            </a-form-item>
+            <a-form-item label="分类">
+                <a-input v-model:value="readonly_article.categoryId"/>
+            </a-form-item>
+        </a-form>
+        <div class="11122233223"
+             v-html="readonly_article.content">
+        </div>
     </a-modal>
 
 </template>
@@ -159,7 +191,28 @@
             const createWangEditor = () => {
                 wangEditor = new E("#wangEditor")
                 wangEditor.create()
-                wangEditor.config.uploadImgServer = '/upload-img'
+                //图片上传-配置服务端接口
+                wangEditor.config.uploadImgServer = process.env.VUE_APP_BackEndServer+'/wiki/article/wangeditor/upload/file'
+                //图片上传-自定义 timeout 时间
+                wangEditor.config.uploadImgTimeout = 20 * 1000
+                //关闭粘贴样式的过滤
+                wangEditor.config.pasteFilterStyle = false
+            }
+
+
+            //创建wangEditor2
+            let wangEditor2: any;
+            const createWangEditor2 = (content: any) => {
+                wangEditor2 = new E("#wangEditor2")
+                wangEditor2.create()
+                wangEditor2.txt.html(content);
+                //图片上传-配置服务端接口
+                wangEditor2.config.uploadImgServer = process.env.VUE_APP_BackEndServer+'/wiki/article/wangeditor/upload/file'
+                //图片上传-自定义 timeout 时间
+                wangEditor2.config.uploadImgTimeout = 20 * 1000
+                //关闭粘贴样式的过滤
+                wangEditor2.config.pasteFilterStyle = false
+
             }
 
             const loading = ref(false);
@@ -380,7 +433,7 @@
              * 编辑ebook
              */
                 // -------- 表单内容 ---------
-            const article = reactive({data: {}});
+            const article = reactive({data: {content: "",}});
             const modalVisible2 = ref(false);
             const modalLoading2 = ref(false);
             const edit = (record: any) => {
@@ -389,12 +442,22 @@
                 article.data = Tool.copy(record);//复制数据，不影响源数据
                 getArticleStates();
                 getAllCategories();
+                setTimeout(function () {
+                    if (wangEditor2 == null) {
+                        createWangEditor2(record.content);
+                    }else {
+                        wangEditor2.destroy();//这里做了一次判断，判断编辑器是否被创建，如果创建了就先销毁。
+                        createWangEditor2(record.content);
+
+                    }
+                },200)
+
 
             };
 
             function clearModalEdit() {
                 modalVisible2.value = false;
-                article.data = {};
+                article.data = {content: ""};
                 articleStates.value = []
                 treeSelectData.value = []
             }
@@ -406,6 +469,7 @@
 
             const handleModalOk2 = () => {
                 modalLoading2.value = true;
+                article.data.content = wangEditor2.txt.html()
                 axios.post("/wiki/article/article/save", article.data).then((response) => {
                     modalLoading2.value = false;
                     const data = response.data; // data = commonResp
@@ -421,6 +485,15 @@
                     clearModalEdit()
                 });
             };
+
+            const modalVisible3 = ref(false);
+            const readonly_article = reactive({data: {}});
+            const read = (record: any) => {
+                modalVisible3.value = true;
+                readonly_article.data = Tool.copy(record);//复制数据，不影响源数据
+                console.log("read.....record............", record)
+            }
+
 
             return {
                 param,
@@ -454,7 +527,11 @@
                 handleModalOk2,
                 handleCancel2,
 
-                //ckeditor data
+                // read modal
+                read,
+                readonly_article: toRef(readonly_article, 'data'),
+                modalVisible3,
+
             };
         },
 
