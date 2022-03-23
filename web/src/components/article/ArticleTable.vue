@@ -32,7 +32,7 @@
         </template>
         <template v-slot:action="{ text, record }">
             <a-space size="small">
-                <a-button type="primary" shape="circle" @click="read(record)">
+                <a-button type="primary" shape="circle" @click="readArticle(record)">
                     <template #icon><ReadFilled /></template>
                 </a-button>
                 <a-button type="primary" @click="edit(record)">
@@ -488,7 +488,7 @@
 
             const modalVisible3 = ref(false);
             const readonly_article = reactive({data: {}});
-            const read = (record: any) => {
+            const readArticle = (record: any) => {
                 modalVisible3.value = true;
                 readonly_article.data = Tool.copy(record);//复制数据，不影响源数据
                 console.log("read.....record............", record)
@@ -528,7 +528,7 @@
                 handleCancel2,
 
                 // read modal
-                read,
+                readArticle,
                 readonly_article: toRef(readonly_article, 'data'),
                 modalVisible3,
 
