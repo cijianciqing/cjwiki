@@ -5,7 +5,7 @@ package cj.springboot.wiki.security.handler;
 
 
 import cj.springboot.wiki.security.dto.CJUserResponse;
-import cj.springboot.wiki.security.entity.CJUser;
+import cj.springboot.wiki.security.rbac.entity.CjAuthUserEntity;
 import cj.springboot.wiki.util.jwt.CJJWTUtil;
 import cj.springboot.wiki.util.redis.CJRedisCache;
 import cn.com.ns.cj.cjuniversalspringbootstarter.dozer.CJDozerUtil;
@@ -69,7 +69,7 @@ public class ImoocAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
 		/*
 		 * 保存token到redis
 		 * */
-		CJUser loginUser = (CJUser) authentication.getPrincipal();
+		CjAuthUserEntity loginUser = (CjAuthUserEntity) authentication.getPrincipal();
 		CJUserResponse convertor = cjDozerUtil.convertor(loginUser, CJUserResponse.class);
 		String userId = loginUser.getId().toString();
 		String jwt = CJJWTUtil.createJWT(userId);
@@ -81,7 +81,7 @@ public class ImoocAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
 		//把token响应给前端
 //		HashMap<String,Object> map = new HashMap<>();
 //		map.put("token",jwt);
-//		map.put("cjUser",convertor);
+//		map.put("CjAuthUserEntity",convertor);
 
 
 //		if (LoginResponseType.JSON.equals(securityProperties.getBrowser().getLoginType())) {//loginType 默认设置JSON

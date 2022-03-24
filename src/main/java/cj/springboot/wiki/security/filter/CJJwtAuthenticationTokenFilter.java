@@ -1,7 +1,7 @@
 package cj.springboot.wiki.security.filter;
 
 
-import cj.springboot.wiki.security.entity.CJUser;
+import cj.springboot.wiki.security.rbac.entity.CjAuthUserEntity;
 import cj.springboot.wiki.util.jwt.CJJWTUtil;
 import cj.springboot.wiki.util.redis.CJRedisCache;
 import io.jsonwebtoken.Claims;
@@ -64,7 +64,7 @@ public class CJJwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         //从redis中获取用户信息
         String redisKey = "login" + cjGlobalAppName+ ":" + userid;
-        CJUser loginUser = redisCache.getCacheObject(redisKey);
+        CjAuthUserEntity loginUser = redisCache.getCacheObject(redisKey);
         if(Objects.isNull(loginUser)){
             log.info("CJJwtAuthenticationTokenFilter....用户未登录....");
             throw new RuntimeException("CJ用户未登录");

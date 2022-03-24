@@ -5,18 +5,30 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author cj
  * @since 2022-03-24
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)//出现这种问题的情况是由于JSON里面包含了实体没有的字段导致反序列化失败
 @TableName("cj_auth_user")
-public class CjAuthUserEntity extends CJBaseColmns {
+public class CjAuthUserEntity extends CJBaseColmns implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
@@ -50,90 +62,42 @@ public class CjAuthUserEntity extends CJBaseColmns {
     @TableField("username")
     private String username;
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-    public String getEmail() {
-        return email;
-    }
+    //初始化 块
+    {
+        // 表示帐号是否未过期
+        isAccountNonExpired = Boolean.TRUE;
+        //表示帐号是否未锁定
+        isAccountNonLocked = Boolean.TRUE;
+        //表示登录凭据是否未过期
+        isCredentialsNonExpired = Boolean.TRUE;
+        //表示账户是否被启用
+        isEnabled = Boolean.TRUE;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public Boolean getIsAccountNonExpired() {
-        return isAccountNonExpired;
-    }
-
-    public void setIsAccountNonExpired(Boolean isAccountNonExpired) {
-        this.isAccountNonExpired = isAccountNonExpired;
-    }
-    public Boolean getIsAccountNonLocked() {
-        return isAccountNonLocked;
-    }
-
-    public void setIsAccountNonLocked(Boolean isAccountNonLocked) {
-        this.isAccountNonLocked = isAccountNonLocked;
-    }
-    public Boolean getIsCredentialsNonExpired() {
-        return isCredentialsNonExpired;
-    }
-
-    public void setIsCredentialsNonExpired(Boolean isCredentialsNonExpired) {
-        this.isCredentialsNonExpired = isCredentialsNonExpired;
-    }
-    public Boolean getIsEnabled() {
-        return isEnabled;
-    }
-
-    public void setIsEnabled(Boolean isEnabled) {
-        this.isEnabled = isEnabled;
-    }
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public String getShowname() {
-        return showname;
-    }
-
-    public void setShowname(String showname) {
-        this.showname = showname;
-    }
-    public String getTelephoneNo() {
-        return telephoneNo;
-    }
-
-    public void setTelephoneNo(String telephoneNo) {
-        this.telephoneNo = telephoneNo;
-    }
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @Override
-    public String toString() {
-        return "CjAuthUserEntity{" +
-            "id=" + id +
-            ", email=" + email +
-            ", isAccountNonExpired=" + isAccountNonExpired +
-            ", isAccountNonLocked=" + isAccountNonLocked +
-            ", isCredentialsNonExpired=" + isCredentialsNonExpired +
-            ", isEnabled=" + isEnabled +
-            ", password=" + password +
-            ", showname=" + showname +
-            ", telephoneNo=" + telephoneNo +
-            ", username=" + username +
-        "}";
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.isAccountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.isAccountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.isCredentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.isEnabled;
     }
 }
