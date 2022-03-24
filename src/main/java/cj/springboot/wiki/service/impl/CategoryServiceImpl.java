@@ -55,7 +55,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                         if(ObjectUtil.isNull(p.getChildren())){
                             p.setChildren(new ArrayList<>());
                         }
-                        System.out.println(c.getParent()+"-->"+p.getId());
+//                        System.out.println(c.getParent()+"-->"+p.getId());
                         p.getChildren().add(c);
                     }
                 }

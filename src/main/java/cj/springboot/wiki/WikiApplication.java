@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan({"cj.springboot.wiki.dao","cj.springboot.wiki.article.dao","cj.springboot.wiki.wangeditor.dao"})
+@MapperScan({"cj.springboot.wiki.dao","cj.springboot.wiki.article.dao","cj.springboot.wiki.wangeditor.dao","cj.springboot.wiki.security.rbac.dao"})
 public class WikiApplication {
 
     public static void main(String[] args) {

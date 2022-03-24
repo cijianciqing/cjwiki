@@ -27,10 +27,11 @@ public class CJCodeGenerator {
 
     // 包名和模块名
     private static final String PACKAGE_NAME = "cj.springboot.wiki";
-    private static final String MODULE_NAME = "wangeditor";
+    private static final String MODULE_NAME = "security.rbac";
 
     // 表名，多个表使用英文逗号分割
-    private static final String[] TBL_NAMES = { "cj_uploaded_file" };
+    private static final String[] TBL_NAMES = {"cj_auth_resource" };
+//            { "cj_auth_user","cj_auth_user_and_role","cj_auth_role","cj_auth_role_and_resource","cj_auth_resource" };
 
     // 表名的前缀，从表生成代码时会去掉前缀
     private static final String TABLE_PREFIX = "";
@@ -95,7 +96,8 @@ public class CJCodeGenerator {
         // 开启生成@RestController控制器
         fastAutoGenerator
                 .strategyConfig(strategyConfigBuilder -> strategyConfigBuilder.controllerBuilder()
-                        .enableRestStyle());
+                        .enableHyphenStyle()//开启驼峰转连字符
+                        .enableRestStyle());//开启生成@RestController 控制器
 
         // 6.3.Service策略配置
         // 格式化service接口和实现类的文件名称，去掉默认的ServiceName前面的I
@@ -106,7 +108,7 @@ public class CJCodeGenerator {
         // 格式化 mapper文件名,格式化xml实现类文件名称
         fastAutoGenerator.strategyConfig(strategyConfigBuilder -> strategyConfigBuilder.mapperBuilder()
                 .superClass(CJMapper.class)
-
+                .enableBaseResultMap()//启用 BaseResultMap 生成
                 .formatMapperFileName("%sDao").formatXmlFileName("%sDao"));
 
         // 7.生成代码

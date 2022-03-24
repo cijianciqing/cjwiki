@@ -1,3 +1,10 @@
+#权限表初始化
+-- cj_auth_resource表
+-- 第一条记录：id为1  parent_id为0,此为root
+-- 规则：
+--     资源类型：分为 DIR\MENU\BUTTON  前端暂且只显示MENU
+
+
 # 电子书表
 drop table if exists `ebook`;
 create table `ebook` (
