@@ -25,6 +25,7 @@ public class CJUser implements UserDetails {
     private String password;
     private String telephoneNo;
     private String email;
+
     // 表示帐号是否未过期
     private Boolean isAccountNonExpired = Boolean.TRUE;
     //表示帐号是否未锁定
@@ -33,7 +34,6 @@ public class CJUser implements UserDetails {
     private Boolean isCredentialsNonExpired = Boolean.TRUE;
     //表示账户是否被启用
     private Boolean isEnabled = Boolean.TRUE;
-
 
 
     /*

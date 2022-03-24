@@ -21,6 +21,6 @@ module.exports = {
         "@typescript-eslint/explicit-module-boundary-types": "off", // ts每个函数都要显式声明返回值
         "@typescript-eslint/ban-types": "off",//E:\java\cjProject\cjWiki\web\src\util\tool.ts: Don't use `object` as a type. The `object` type is currently hard to use
         "vue/no-deprecated-slot-attribute": "off",//`slot` attributes are deprecated  vue/no-deprecated-slot-attribute
-
+        "@typescript-eslint/no-empty-function": "off",// Unexpected empty method 'onOk'
     }
 }

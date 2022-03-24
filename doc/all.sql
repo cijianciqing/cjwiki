@@ -4,6 +4,10 @@
 -- 规则：
 --     资源类型：分为 DIR\MENU\BUTTON  前端暂且只显示MENU
 
+--cj_auth_user表
+--第一条记录：id为1， raw密码为 111222333,加密方式为encoder = new BCryptPasswordEncoder(); String passHash = encoder.encode(pass);
+--  加密后：$2a$10$sBLPoG4NPKCfoBuHgqn9D.D2dwDSPUrCawXYJI3KCmEIMh33ObcMm
+
 
 # 电子书表
 drop table if exists `ebook`;

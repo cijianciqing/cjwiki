@@ -31,6 +31,7 @@ public class CJUserDetailsService implements UserDetailsService {
         cjUser.setId(666L);
         cjUser.setUsername("u1");
         cjUser.setShowname("测试User");
+        String encode = passwordEncoder.encode("123");
         cjUser.setPassword(passwordEncoder.encode("123"));
         return  cjUser;
 

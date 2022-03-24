@@ -246,7 +246,7 @@
             //数据源需要array 而不是 object
             const ebooks = ref([]);
 
-            let pagination = reactive({
+            const pagination = reactive({
                 current: 1,
                 pageSize: 5,
                 total: 0

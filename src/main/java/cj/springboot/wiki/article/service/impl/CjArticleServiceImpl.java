@@ -1,6 +1,7 @@
 package cj.springboot.wiki.article.service.impl;
 
 import cj.springboot.wiki.antvue.table.CJTableQueryReq;
+import cj.springboot.wiki.antvue.table.CJTableResponse;
 import cj.springboot.wiki.article.dto.CJArticleTransfer;
 import cj.springboot.wiki.article.dto.CjArticleSaveRequest;
 import cj.springboot.wiki.article.entity.CjArticleCategoryEntity;
@@ -15,6 +16,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +50,7 @@ public class CjArticleServiceImpl extends ServiceImpl<CjArticleDao, CjArticleEnt
     }
 
     @Override
-    public List<CJArticleTransfer> getArticleTable(CJTableQueryReq tableQueryReq) {
+    public CJTableResponse<CJArticleTransfer> getArticleTable(CJTableQueryReq tableQueryReq) {
 
         log.info("请求参数：{}", tableQueryReq.getCjPageReq());
         CJPageReq cjPageReq = tableQueryReq.getCjPageReq();
@@ -59,7 +61,15 @@ public class CjArticleServiceImpl extends ServiceImpl<CjArticleDao, CjArticleEnt
         PageHelper.startPage(cjPageReq.getPage(), cjPageReq.getSize());
         List<CjArticleEntity> cjArticleEntities = cjArticleDao.getArticlesByRequest(tableQueryReq);
 
-        return cjDozerUtil.convertor(cjArticleEntities, CJArticleTransfer.class);
+        PageInfo<CjArticleEntity> pageInfo = new PageInfo<>(cjArticleEntities);
+
+        log.info("CjArticleEntity：{}", pageInfo.getTotal());
+        log.info("总页数：{}", pageInfo.getPages());
+        List<CJArticleTransfer> convertor = cjDozerUtil.convertor(cjArticleEntities, CJArticleTransfer.class);
+
+
+
+        return new  CJTableResponse<CJArticleTransfer>(pageInfo.getTotal(),convertor);
     }
 
     @Override

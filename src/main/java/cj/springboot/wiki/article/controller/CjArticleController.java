@@ -4,6 +4,7 @@ package cj.springboot.wiki.article.controller;
 import cj.springboot.wiki.antvue.dto.CJVueTreeNode;
 import cj.springboot.wiki.antvue.radio.CJVueRadio;
 import cj.springboot.wiki.antvue.table.CJTableQueryReq;
+import cj.springboot.wiki.antvue.table.CJTableResponse;
 import cj.springboot.wiki.article.dto.CJArticleTransfer;
 import cj.springboot.wiki.article.dto.CjArticleSaveRequest;
 import cj.springboot.wiki.article.entity.CJArticleState;
@@ -63,11 +64,11 @@ public class CjArticleController {
     //查询 article - table
     @PostMapping(value = "/table")
     public CJAjaxResult getEbookList(@Valid @RequestBody CJTableQueryReq tableQueryReq){
-        List<CJArticleTransfer> artcleList = cjArticleService.getArticleTable(tableQueryReq);
-        PageInfo<CJArticleTransfer> pageInfo = new PageInfo<>(artcleList);
+        CJTableResponse<CJArticleTransfer> pageInfo = cjArticleService.getArticleTable(tableQueryReq);
+//        PageInfo<CJArticleTransfer> pageInfo = new PageInfo<>(artcleList);
 
         log.info("ArtcieTable总行数：{}", pageInfo.getTotal());
-        log.info("总页数：{}", pageInfo.getPages());
+
         return CJAjaxResult.success(pageInfo);
     }
 
