@@ -25,10 +25,18 @@
             :loading="loading"
             :pagination="pagination"
             @change="handleTableChange"
-    >
 
-        <template v-slot:cover1="{ text: cover }">
-            <img v-if="cover" :src="cover" alt="avatar"/>
+
+    >
+<!--        :rowClassName="(record, index) => (index % 2 === 1 ? 'table-striped' : null)"-->
+<!--        <template v-slot:cover1="{ text: cover }">-->
+<!--            <img v-if="cover" :src="cover" alt="avatar"/>-->
+<!--        </template>-->
+        <template v-slot:stateRender ="{ text: cjState,record,index }">
+            <a-tag v-if="cjState==='start'" color="green">开始</a-tag>
+            <a-tag v-if="cjState==='improve'" color="orange">待补充</a-tag>
+            <a-tag v-if="cjState==='verify'"  color="purple">待验证</a-tag>
+            <a-tag v-if="cjState==='finish'" color="blue">完成</a-tag>
         </template>
         <template v-slot:action="{ text, record }">
             <a-space size="small">
@@ -226,7 +234,24 @@
                     title: '状态',
                     key: 'articleState',
                     dataIndex: 'articleState',
-                    width: '10%'
+                    width: '10%',
+                    slots: {customRender: 'stateRender'},
+                    //格式应该不正确。。。
+                    // customRender: function ({text, record, index}:any) {
+                    //     if(text=="start"){
+                    //         return '<a-tag color="green">开始</a-tag>'
+                    //     }
+                    //     if(text=="improve"){
+                    //         return "<a-tag color=\"orange\">待补充</a-tag>"
+                    //     }
+                    //     if(text=="verify"){
+                    //         return "<a-tag color=\"purple\">待验证</a-tag>"
+                    //     }
+                    //     if(text=="finish"){
+                    //         return '<button>完成</button>'
+                    //     }
+                    // }
+
                 },
                 {
                     title: '文章描述',
@@ -241,6 +266,8 @@
                     width: '20%'
                 }
             ];
+
+
 
 
             //数据源需要array 而不是 object
@@ -538,6 +565,11 @@
 </script>
 
 <style lang="less" scoped>
+    //表格斑马纹-->不起作用
+    /*.ant-table-striped  td  {*/
+    /*    background-color: #b30505;*/
+    /*}*/
+
     img {
         width: 50px;
         height: 50px;
@@ -558,5 +590,6 @@
             flex: 1;
         }
     }
+
 </style>
 
