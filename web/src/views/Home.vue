@@ -5,7 +5,7 @@
         </a-layout-header>
         <a-layout-content style="padding: 0 50px; margin: 50px">
 
-            <a-divider>With Text</a-divider>
+<!--            <a-divider>With Text</a-divider>-->
             <a-carousel autoplay>
                 <div><h1>No Execuse!!</h1></div>
                 <div><h2>Execuse sounds best to the person who's making them up.</h2></div>
