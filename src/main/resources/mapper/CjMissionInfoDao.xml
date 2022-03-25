@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cj.springboot.wiki.mission.dao.CjMissionInfoDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cj.springboot.wiki.mission.entity.CjMissionInfoEntity">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="task_name" property="taskName" />
+        <result column="task_desc" property="taskDesc" />
+        <result column="task_content" property="taskContent" />
+        <result column="task_principal" property="taskPrincipal" />
+        <result column="task_important" property="taskImportant" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="parent_id" property="parentId" />
+    </resultMap>
+
+</mapper>
