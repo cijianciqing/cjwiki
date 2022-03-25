@@ -1,13 +1,11 @@
 package cj.springboot.wiki.antvue.table;
 
 import cj.springboot.wiki.dto.req.CJPageReq;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@Getter
-@Setter
-@ToString
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CJTableQueryReq {
 
     private String categoryId;

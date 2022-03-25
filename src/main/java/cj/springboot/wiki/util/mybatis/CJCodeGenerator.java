@@ -27,10 +27,10 @@ public class CJCodeGenerator {
 
     // 包名和模块名
     private static final String PACKAGE_NAME = "cj.springboot.wiki";
-    private static final String MODULE_NAME = "security.rbac";
+    private static final String MODULE_NAME = "mission";
 
     // 表名，多个表使用英文逗号分割
-    private static final String[] TBL_NAMES = {"cj_auth_resource" };
+    private static final String[] TBL_NAMES = {"cj_mission_step" };
 //            { "cj_auth_user","cj_auth_user_and_role","cj_auth_role","cj_auth_role_and_resource","cj_auth_resource" };
 
     // 表名的前缀，从表生成代码时会去掉前缀

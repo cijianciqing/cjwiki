@@ -10,6 +10,8 @@ import CJUserManage from '@/views/backStage/AuthorityManage/CJUserManage.vue'
 import CJRoleManage from '@/views/backStage/AuthorityManage/CJRoleManage.vue'
 import CJResourceManage from '@/views/backStage/AuthorityManage/CJResourceManage.vue'
 
+import CJMissionManage from '@/views/admin/CJMissionManage.vue'
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -38,6 +40,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/admin/article',
     name: 'ArticleAdmin',
     component: ArticleAdmin
+  },
+  {
+    path: '/admin/mission',
+    name: 'CJMissionManage',
+    component: CJMissionManage
   },
   {
     path: '/back',

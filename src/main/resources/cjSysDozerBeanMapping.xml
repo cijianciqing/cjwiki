@@ -35,9 +35,26 @@
             <a>id</a>
             <b>value</b>
         </field>
-
     </mapping>
 
+
+    <!--  CjMissionStepEntity To CJListResponse -->
+<!--    <mapping>-->
+<!--        <class-a>cj.springboot.wiki.mission.entity.CjMissionStepEntity</class-a>-->
+<!--        <class-b>cj.springboot.wiki.antvue.list.CJListResponse</class-b>-->
+<!--        <field>-->
+<!--            <a></a>-->
+<!--            <b>key</b>-->
+<!--        </field>-->
+<!--        <field>-->
+<!--            <a>name</a>-->
+<!--            <b>title</b>-->
+<!--        </field>-->
+<!--        <field>-->
+<!--            <a>id</a>-->
+<!--            <b>value</b>-->
+<!--        </field>-->
+<!--    </mapping>-->
     <!--  CJArticle To CJViewArticle -->
    <!-- <mapping>
         <class-a>nanshan.cj.learningnotes.entity.CJArticle</class-a>
