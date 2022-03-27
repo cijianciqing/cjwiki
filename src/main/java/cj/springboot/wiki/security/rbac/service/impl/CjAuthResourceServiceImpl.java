@@ -1,6 +1,5 @@
 package cj.springboot.wiki.security.rbac.service.impl;
 
-import cj.springboot.wiki.dto.response.CategoryResponse;
 import cj.springboot.wiki.security.rbac.dto.CjAuthResourceTransfer;
 import cj.springboot.wiki.security.rbac.entity.CjAuthResourceEntity;
 import cj.springboot.wiki.security.rbac.dao.CjAuthResourceDao;

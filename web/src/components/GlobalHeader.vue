@@ -12,9 +12,6 @@
         <a-menu-item key="/admin/article">
             <router-link to="/admin/article">知识管理</router-link>
         </a-menu-item>
-        <a-menu-item key="/admin/ebook">
-            <router-link to="/admin/ebook">电子书管理</router-link>
-        </a-menu-item>
         <a-menu-item>
             <a-dropdown>
                 <a class="ant-dropdown-link" @click.prevent>
