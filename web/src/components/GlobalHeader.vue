@@ -1,49 +1,78 @@
 <template>
 
-        <div class="logo"/>
-        <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' ,display: 'block'}">
+    <div class="logo"/>
+    <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px',display: 'block' }"><!---->
 
-            <a-menu-item key="/">
-                <router-link to="/">首页</router-link>
-            </a-menu-item>
-            <a-menu-item key="/admin/mission">
-                <router-link to="/admin/mission">目标管理</router-link>
-            </a-menu-item>
-            <a-menu-item key="/admin/article">
-                <router-link to="/admin/article">知识管理</router-link>
-            </a-menu-item>
-            <a-menu-item key="/admin/ebook">
-                <router-link to="/admin/ebook">电子书管理</router-link>
-            </a-menu-item>
-            <a-menu-item key="/admin/category">
-                <router-link to="/admin/category">分类管理</router-link>
-            </a-menu-item>
-            <a-menu-item key="/back">
-                <router-link to="/back">后台管理</router-link>
-            </a-menu-item>
-            <a-menu-item key="/about">
-                <router-link to="/about">关于我们</router-link>
-            </a-menu-item>
-
-            <a-popconfirm
-                    title="确认退出登录?"
-                    ok-text="是"
-                    cancel-text="否"
-                    @confirm="logout()"
-            >
-                <a class="login-menu" v-show="user.id">
-                    <span>退出登录</span>
+        <a-menu-item key="/">
+            <router-link to="/">首页</router-link>
+        </a-menu-item>
+        <a-menu-item key="/admin/mission">
+            <router-link to="/admin/mission">目标管理</router-link>
+        </a-menu-item>
+        <a-menu-item key="/admin/article">
+            <router-link to="/admin/article">知识管理</router-link>
+        </a-menu-item>
+        <a-menu-item key="/admin/ebook">
+            <router-link to="/admin/ebook">电子书管理</router-link>
+        </a-menu-item>
+        <a-menu-item>
+            <a-dropdown>
+                <a class="ant-dropdown-link" @click.prevent>
+                    Music
+                    <DownOutlined/>
                 </a>
-            </a-popconfirm>
-            <a class="login-menu" v-show="user.id" v-text="'您好：'+user.username">
-            </a>
-            <!--    如果使用如下格式，登录后不自动显示用户昵称            <span>您好：{{user.username}}</span>-->
-            <a class="login-menu" v-show="!user.id" @click="showLoginModal">
-                <span>登录</span>
-            </a>
+                <template #overlay>
+                    <a-menu>
+                        <a-menu-item>
+                            <a-button type="primary" @click="play">
+                                <template #icon><SearchOutlined /></template>
+                                播放
+                            </a-button>
+                        </a-menu-item>
+                        <a-menu-item>
+                            <a-button  type="primary" danger @click="stop">
+                                <template #icon><SearchOutlined /></template>
+                                停止
+                            </a-button>
+                        </a-menu-item>
 
-        </a-menu>
+                    </a-menu>
+                </template>
+            </a-dropdown>
+        </a-menu-item>
+        <!-- <a-sub-menu>
+             <template #icon>
+                 <setting-outlined/>
+             </template>
+             <template #title>Navigation Three - Submenu</template>
+             <a-menu-item key="setting:1">Option 1</a-menu-item>
+             <a-menu-item key="setting:2">Option 2</a-menu-item>
+         </a-sub-menu>-->
+        <a-menu-item key="/back">
+            <router-link to="/back">后台管理</router-link>
+        </a-menu-item>
+        <a-menu-item key="/about">
+            <router-link to="/about">关于我们</router-link>
+        </a-menu-item>
 
+        <a-popconfirm
+                title="确认退出登录?"
+                ok-text="是"
+                cancel-text="否"
+                @confirm="logout()"
+        >
+            <a class="login-menu" v-show="user.id">
+                <span>退出登录</span>
+            </a>
+        </a-popconfirm>
+        <a class="login-menu" v-show="user.id" v-text="'您好：'+user.username">
+        </a>
+        <!--    如果使用如下格式，登录后不自动显示用户昵称            <span>您好：{{user.username}}</span>-->
+        <a class="login-menu" v-show="!user.id" @click="showLoginModal">
+            <span>登录</span>
+        </a>
+
+    </a-menu>
 
 
     <a-modal
@@ -64,12 +93,14 @@
 </template>
 
 <script>
-    import { defineComponent, ref, computed, reactive } from 'vue';
+    import {defineComponent, ref, computed, reactive} from 'vue';
     import axios from 'axios';
-    import { message } from 'ant-design-vue';
-    import { useStore } from 'vuex'
+    import {message} from 'ant-design-vue';
+    import {useStore} from 'vuex'
     import qs from 'qs'
     import cjStore from "@/store";
+    import {useSound} from '@vueuse/sound'
+    import buttonSfx from '@/assets/excuse.mp3'
 
     export default {
         name: "GlobalHeader",
@@ -90,7 +121,7 @@
             };
 
             // 直接显示当前user,登录后更新user
-            const user = computed(() =>{
+            const user = computed(() => {
                 // console.log("computed change",user)
                 return store.state.user
             })
@@ -113,7 +144,7 @@
                 axios.post('/cjauth', qs.stringify(loginUser)).then((response) => {
                     loginModalLoading.value = false;
                     const data = response.data;
-                    if (data.code == process.env.VUE_APP_ResponseSuccess){
+                    if (data.code == process.env.VUE_APP_ResponseSuccess) {
                         loginModalVisible.value = false;
                         message.success("登录成功！");
                         axios.defaults.headers.common['token'] = data.data.token
@@ -122,7 +153,7 @@
 
                         message.error(data.msg);
                     }
-                }).finally(()=>{
+                }).finally(() => {
                     loginModalLoading.value = false;
                 })
                 //当返回的Http状态为500时执行以下命令
@@ -140,7 +171,7 @@
                 axios.post('/logout').then((response) => {
                     loginModalLoading.value = false;
                     const data = response.data;
-                    if (data.code == process.env.VUE_APP_ResponseSuccess){
+                    if (data.code == process.env.VUE_APP_ResponseSuccess) {
                         loginModalVisible.value = false;
                         message.success("CJ退出成功！");
                         axios.defaults.headers.common['token'] = ""
@@ -156,6 +187,13 @@
                 // })
                 ;
             };
+
+            const {play, isPlaying, stop, pause, sound} = useSound(buttonSfx, {
+                interrupt: true,//不重复播放
+                soundEnabled: true,//允许有声音？？？？
+            })
+
+
             return {
                 loginModalVisible,
                 loginModalLoading,
@@ -165,6 +203,8 @@
                 logout,
                 user,
 
+                play,
+                stop,
             }
 
         }
