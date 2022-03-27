@@ -79,6 +79,8 @@ public class CjMissionInfoServiceImpl extends ServiceImpl<CjMissionInfoDao, CjMi
     }
 
     public void deleteMission(String id) {
-        removeById(id);
+
+        cjMissionInfoDao.deleteByRootId(id);
+//        removeById(id);
     }
 }

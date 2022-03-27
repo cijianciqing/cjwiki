@@ -1,6 +1,8 @@
 package cj.springboot.wiki.mission.service.impl;
 
 import cj.springboot.wiki.antvue.list.CJListResponse;
+import cj.springboot.wiki.mission.dto.CJMissionSetpSaveRequest;
+import cj.springboot.wiki.mission.entity.CjMissionInfoEntity;
 import cj.springboot.wiki.mission.entity.CjMissionStepEntity;
 import cj.springboot.wiki.mission.dao.CjMissionStepDao;
 import cj.springboot.wiki.mission.service.CjMissionStepService;
@@ -43,5 +45,10 @@ public class CjMissionStepServiceImpl extends ServiceImpl<CjMissionStepDao, CjMi
 
         return cjDozerUtil.convertor(cjMissionStepEntities,CJListResponse.class);
 
+    }
+
+    public void saveMissionStep(CJMissionSetpSaveRequest req) {
+        CjMissionStepEntity convertor = cjDozerUtil.convertor(req, CjMissionStepEntity.class);
+        saveOrUpdate(convertor);
     }
 }

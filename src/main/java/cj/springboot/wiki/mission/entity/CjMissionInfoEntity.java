@@ -37,7 +37,7 @@ public class CjMissionInfoEntity extends CJBaseColmns {
     private String taskPrincipal;
 
     @TableField("task_important")
-    private String taskImportant;
+    private Integer taskImportant;
 
     @TableField("start_time")
     private LocalDateTime startTime;
@@ -83,11 +83,11 @@ public class CjMissionInfoEntity extends CJBaseColmns {
     public void setTaskPrincipal(String taskPrincipal) {
         this.taskPrincipal = taskPrincipal;
     }
-    public String getTaskImportant() {
+    public Integer getTaskImportant() {
         return taskImportant;
     }
 
-    public void setTaskImportant(String taskImportant) {
+    public void setTaskImportant(Integer taskImportant) {
         this.taskImportant = taskImportant;
     }
     public LocalDateTime getStartTime() {

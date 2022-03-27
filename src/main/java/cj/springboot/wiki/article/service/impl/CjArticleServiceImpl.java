@@ -74,7 +74,10 @@ public class CjArticleServiceImpl extends ServiceImpl<CjArticleDao, CjArticleEnt
 
     @Override
     public void delete(String id) {
-        cjArticleDao.deleteById(id);
+        CjArticleEntity cjArticleEntity = new CjArticleEntity();
+        cjArticleEntity.setId(id);
+        cjArticleDao.deleteByIdWithFill(cjArticleEntity);
+//        cjArticleDao.deleteById(id);
     }
 
     @Override

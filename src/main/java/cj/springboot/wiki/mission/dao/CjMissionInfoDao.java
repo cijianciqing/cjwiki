@@ -12,5 +12,5 @@ import cj.springboot.wiki.config.mybatis.CJMapper;
  * @since 2022-03-25
  */
 public interface CjMissionInfoDao extends CJMapper<CjMissionInfoEntity> {
-
+        void deleteByRootId(String rootId);
 }

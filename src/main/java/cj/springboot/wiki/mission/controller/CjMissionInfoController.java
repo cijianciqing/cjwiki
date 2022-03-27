@@ -27,7 +27,7 @@ public class CjMissionInfoController {
     @Autowired
     private CjMissionInfoServiceImpl cjMissionInfoService;
 
-    //查询 category - table
+    //查询所有 mission
     @PostMapping(value = "/table")
     public CJAjaxResult getCategoryList(){
         List<CJMissionResponse> categoryList = cjMissionInfoService.getAllMission();
@@ -35,13 +35,13 @@ public class CjMissionInfoController {
     }
 
 
-    //查询 category - table
+    //保存 mission info
     @PostMapping(value = "/save")
     public CJAjaxResult addMission(@Valid @RequestBody CJMissionSaveRequest req){
         cjMissionInfoService.saveMission(req);
         return CJAjaxResult.success("添加MissionInfo成功");
     }
-    //删除特定article
+    //删除特定 mission
     @DeleteMapping("/delete/{id}")
     public CJAjaxResult delete(@PathVariable String id) {
         cjMissionInfoService.deleteMission(id);

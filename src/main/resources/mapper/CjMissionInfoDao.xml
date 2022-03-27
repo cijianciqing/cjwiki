@@ -17,4 +17,11 @@
         <result column="parent_id" property="parentId" />
     </resultMap>
 
+    <update id="deleteByRootId" >
+        update  cj_mission_info
+        set flag=1
+        WHERE FIND_IN_SET(id,queryAllMissionByRootId(#{rootId}))
+    </update>
+
+
 </mapper>
