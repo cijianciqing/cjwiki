@@ -2,4 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cj.springboot.wiki.article.dao.CjArticleCategoryDao">
 
+    <update id="deleteCategoryByRootId" >
+        update  cj_article_category
+        set flag=1
+        WHERE FIND_IN_SET(id,queryChildrenCategoriesByTheId(#{rootId}))
+    </update>
 </mapper>

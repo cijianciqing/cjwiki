@@ -41,4 +41,10 @@ public class CjMissionStepController {
         return CJAjaxResult.success("添加MissionInfo成功");
     }
 
+    //删除特定 mission-step
+    @DeleteMapping("/delete/{id}")
+    public CJAjaxResult delete(@PathVariable String id) {
+        cjMissionStepService.deleteMissionStep(id);
+        return CJAjaxResult.success("删除MissionStep成功");
+    }
 }

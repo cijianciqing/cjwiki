@@ -379,7 +379,7 @@
                 ).then((response) => {
                     const data = response.data;
                     if (data.code == process.env.VUE_APP_ResponseSuccess) {
-                        treeSelectData.value.push(data.data);
+                        treeSelectData.value=data.data;
                     } else {
                         message.error(data.msg);
                     }

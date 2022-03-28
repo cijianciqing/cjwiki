@@ -113,7 +113,17 @@
                             </a-list-item-meta>
                             <template #actions>
                                 <a-tag color="cyan">{{item.updateTime}}</a-tag>
-                                <a>del</a>
+
+                                <a-popconfirm
+                                        title="确认删除?"
+                                        ok-text="Confirm"
+                                        cancel-text="Cancel"
+                                        @confirm="delMissionStep(item.id)"
+                                >
+                                    <a-button type="text" danger >del</a-button>
+                                </a-popconfirm>
+
+
                             </template>
                         </a-list-item>
                     </template>
@@ -423,15 +433,15 @@
              * 删除mission
              **/
 
-            // const delMission = (id: number) => {
-            //     axios.delete("/wiki/mission/info/delete/" + id).then((response) => {
-            //         const data = response.data; // data = commonResp
-            //         if (data.code == process.env.VUE_APP_ResponseSuccess) {
-            //             // 重新加载列表
-            //             queryMission();
-            //         }
-            //     });
-            // };
+            const delMissionStep = (id: string) => {
+                axios.delete("/wiki/mission/step/delete/" + id).then((response) => {
+                    const data = response.data; // data = commonResp
+                    if (data.code == process.env.VUE_APP_ResponseSuccess) {
+                        // 重新加载列表
+                        queryMissionSteps(selectedMissionId.value);
+                    }
+                });
+            };
 
             return {
                 missions: toRef(missions, 'data'),
@@ -464,6 +474,7 @@
                 addStep,
                 stepModalOk,
                 stepModalCancel,
+                delMissionStep,
 
 
             };

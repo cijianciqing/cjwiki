@@ -15,6 +15,7 @@
         <result column="start_time" property="startTime" />
         <result column="end_time" property="endTime" />
         <result column="parent_id" property="parentId" />
+        <result column="finish_status" property="finishStatus" />
     </resultMap>
 
     <update id="deleteByRootId" >

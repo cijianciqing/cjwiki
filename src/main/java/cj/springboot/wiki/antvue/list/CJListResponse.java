@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CJListResponse {
+    private String id;
     private String avatar;
     private String title;
     private String description;

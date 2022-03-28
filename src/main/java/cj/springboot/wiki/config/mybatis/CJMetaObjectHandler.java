@@ -1,5 +1,6 @@
 package cj.springboot.wiki.config.mybatis;
 
+import cj.springboot.wiki.mission.entity.CjMissionInfoEntity;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
@@ -20,10 +21,18 @@ public class CJMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void insertFill(MetaObject metaObject) {
+
+        //可以根据如下代码进行个性化配置
+        //metaObject.getOriginalObject() instanceof CjMissionInfoEntity
+
         log.info(" -------------------- start insert fill ...  --------------------");
         this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now());
         this.strictInsertFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
         this.strictInsertFill(metaObject, "flag", Boolean.class, false);
+
+        /*
+        * 以下这两个字段，可以考虑放到初始代码块中。。
+        * */
 
         this.strictInsertFill(metaObject, "sortNo", Integer.class, 0);
         this.strictInsertFill(metaObject, "parentId", String.class, "0");

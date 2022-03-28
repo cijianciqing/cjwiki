@@ -13,4 +13,6 @@ import cj.springboot.wiki.config.mybatis.CJMapper;
  */
 public interface CjArticleCategoryDao extends CJMapper<CjArticleCategoryEntity> {
 
+    void deleteCategoryByRootId(String id);
+
 }

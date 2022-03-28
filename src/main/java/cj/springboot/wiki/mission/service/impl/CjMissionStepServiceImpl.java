@@ -51,4 +51,8 @@ public class CjMissionStepServiceImpl extends ServiceImpl<CjMissionStepDao, CjMi
         CjMissionStepEntity convertor = cjDozerUtil.convertor(req, CjMissionStepEntity.class);
         saveOrUpdate(convertor);
     }
+
+    public void deleteMissionStep(String id) {
+        removeById(id);
+    }
 }

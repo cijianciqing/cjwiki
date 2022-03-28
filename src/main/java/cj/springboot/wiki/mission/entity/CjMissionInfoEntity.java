@@ -48,6 +48,13 @@ public class CjMissionInfoEntity extends CJBaseColmns {
     @TableField("parent_id")
     private String parentId;
 
+    @TableField("finish_status")
+    private String finishStatus;
+
+    {
+        finishStatus="进行中";
+    }
+
     public String getId() {
         return id;
     }
@@ -112,6 +119,14 @@ public class CjMissionInfoEntity extends CJBaseColmns {
         this.parentId = parentId;
     }
 
+    public String getFinishStatus() {
+        return finishStatus;
+    }
+
+    public void setFinishStatus(String finishStatus) {
+        this.finishStatus = finishStatus;
+    }
+
     @Override
     public String toString() {
         return "CjMissionInfoEntity{" +
@@ -124,6 +139,7 @@ public class CjMissionInfoEntity extends CJBaseColmns {
             ", startTime=" + startTime +
             ", endTime=" + endTime +
             ", parentId=" + parentId +
+            ", finishStatus=" + finishStatus +
         "}";
     }
 }

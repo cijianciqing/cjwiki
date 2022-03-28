@@ -2,8 +2,25 @@
     <a-layout id="components-layout-demo-fixed-sider">
         <a-layout-sider :style="{background: '#fff', overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
             <div class="logo" >
-<!--                <a-avatar shape="square" :size="64" style="backgroundColor:#87d068" icon="user" >  <h3>wqn</h3></a-avatar>-->
-
+                <a-tag color="#55acee" >
+                    <template #icon>
+                        <twitter-outlined />
+                    </template>
+                    Twitter
+                </a-tag>
+              <!--  <a-dropdown>
+                    <template #overlay>
+                        <a-menu @click="handleMenuClick">
+                            <a-menu-item key="1">新增</a-menu-item>
+                            <a-menu-item key="2">修改</a-menu-item>
+                            <a-menu-item key="3">删除</a-menu-item>
+                        </a-menu>
+                    </template>
+                    <a-button>
+                        操作
+                        <DownOutlined />
+                    </a-button>
+                </a-dropdown>-->
             </div>
             <ArticleCategoryTree/>
         </a-layout-sider>
@@ -44,7 +61,7 @@
 <style scoped>
     #components-layout-demo-fixed-sider .logo {
         height: 32px;
-        background: dodgerblue;
+        /*background: dodgerblue;*/
         margin: 16px;
     }
 </style>
