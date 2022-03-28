@@ -216,7 +216,11 @@
     import {message} from "ant-design-vue";
     import {Tool} from "@/util/tool";
 
-
+/*
+* 对于有id-pid的数据
+*
+* 选中的节点与新增操作有关，与select\update\delete操作无关
+* */
     export default defineComponent({
         components: {
             GlobalHeader,
@@ -299,8 +303,8 @@
                 onSelect: function (record: any, selected: any, selectedRows: any, nativeEvent: any) {
                     console.log("record: ", record)
                     selectedMissionId.value = record.id//step-list同步变化
-                    mission.value.parentId = record.id//用于模态框提交过程中parentId设置
-                    step.value.taskId = record.id
+                    mission.data.parentId = record.id//用于新增子任务过程中，模态框提交时parentId设置
+                    step.data.taskId = record.id
                     // console.log("selectedRows:",selectedRows)
                 }
             }
@@ -323,8 +327,10 @@
             /*
             * mission modal基本属性
             * */
-            const mission = ref({
-                parentId: "0"
+            const mission = reactive({
+                data:{
+                    parentId: "0"//用于添加子任务
+                }
             })
             const missionModalVisible = ref(false);
             const missionModalLoading = ref(false);
@@ -350,8 +356,19 @@
             const addMission = () => {
                 missionModalVisible.value = true;
             }
+            /*
+              * 编辑mission
+              * */
+            const editMission = (record: any) => {
+                console.log("editMission-record:", record)
+                missionModalVisible.value = true;
+                mission.data = Tool.copy(record);//复制数据，不影响源数据
+            }
+            /*
+            * 清空mission modal
+            * */
             const clearMissionModal = () => {
-                mission.value = {parentId: selectedMissionId.value}
+                mission.data = {parentId: selectedMissionId.value}
             }
 
             const missionModalCancel = () => {
@@ -361,7 +378,7 @@
             const missionModalOk = () => {
                 missionModalLoading.value = true;
 
-                axios.post("/wiki/mission/info/save", mission.value).then((response) => {
+                axios.post("/wiki/mission/info/save", mission.data).then((response) => {
                     const data = response.data; // data = commonResp
                     if (data.code == process.env.VUE_APP_ResponseSuccess) {
                         missionModalVisible.value = false;
@@ -376,14 +393,6 @@
                 });
             }
 
-
-            /*
-            * 编辑mission
-            * */
-            const editMission = (record: any) => {
-                missionModalVisible.value = true;
-                mission.value = Tool.copy(record);//复制数据，不影响源数据
-            }
             /**
              * 删除mission
              **/
@@ -401,8 +410,10 @@
 
 
 
-            const step = ref({
-                taskId: "0"
+            const step = reactive({
+                data:{
+                    taskId: "0"//代表:初始情况下未选中任何mission
+                }
             })
             const stepModalVisible = ref(false);
             const stepModalLoading = ref(false);
@@ -410,14 +421,14 @@
            * 新增
            * */
             const addStep = () => {
-                if (step.value.taskId != "0") {
+                if (step.data.taskId != "0") {
                     stepModalVisible.value = true;
                 }else{
                     message.info("请选择一个目标")
                 }
             }
             const clearStepModal = () => {
-                step.value = {taskId: selectedMissionId.value}
+                step.data = {taskId: selectedMissionId.value}
             }
 
             const stepModalCancel = () => {
@@ -427,7 +438,7 @@
             const stepModalOk = () => {
                 stepModalLoading.value = true;
 
-                axios.post("/wiki/mission/step/save", step.value).then((response) => {
+                axios.post("/wiki/mission/step/save", step.data).then((response) => {
                     const data = response.data; // data = commonResp
                     if (data.code == process.env.VUE_APP_ResponseSuccess) {
                         stepModalVisible.value = false;
@@ -438,17 +449,16 @@
                         message.error(data.msg);
                     }
                 }).finally(() => {
-
                     stepModalLoading.value = false;
                 });
             }
 
 
             /*
-            * step-list操作
+            * step-list操作,mission与missionStep的关联
             * */
 
-            const steps = ref([]);
+            const steps = reactive({data:[]});
 
             watch(selectedMissionId, (newVal, oldVal) => {
                 queryMissionSteps(newVal);
@@ -463,26 +473,20 @@
                     loading.value = false;
                     const data = response.data;
                     if (data.code == process.env.VUE_APP_ResponseSuccess) {
-                        steps.value = data.data;
+                        steps.data = data.data;
                     } else {
                         message.error(data.msg);
                     }
                 });
             };
-            /*
-              * 编辑step
-              * */
-            // const editStep = (record:any)=>{
-            //     stepModalVisible.value=true;
-            //     step.value = Tool.copy(record);//复制数据，不影响源数据
-            // }
+
             /**
              * 删除mission
              **/
 
             const delMissionStep = (id: string) => {
                 axios.delete("/wiki/mission/step/delete/" + id).then((response) => {
-                    const data = response.data; // data = commonResp
+                    const data = response.data
                     if (data.code == process.env.VUE_APP_ResponseSuccess) {
                         // 重新加载列表
                         queryMissionSteps(selectedMissionId.value);
@@ -500,7 +504,7 @@
 
                 //mission的curd
                 selectedMissionId,
-                mission,
+                mission: toRef(mission, 'data'),
                 addMission,
                 queryMission,
                 missionModalVisible,
@@ -514,8 +518,8 @@
                 /*
                 * mission step操作
                 * */
-                steps,
-                step,
+                steps : toRef(steps, 'data'),
+                step  : toRef(step, 'data'),
                 stepModalVisible,
                 stepModalLoading,
                 queryMissionSteps,
