@@ -228,13 +228,15 @@
                 {
                     title: '名称',
                     dataIndex: 'name',
-                    width: '30%'
+                    width: '30%',
+                    ellipsis:true,
                 },
                 {
                     title: '状态',
                     key: 'articleState',
                     dataIndex: 'articleState',
                     width: '10%',
+                    ellipsis:true,
                     slots: {customRender: 'stateRender'},
                     //格式应该不正确。。。
                     // customRender: function ({text, record, index}:any) {
@@ -257,7 +259,8 @@
                     title: '文章描述',
                     key: 'articleDesc',
                     dataIndex: 'articleDesc',
-                    width: '40%'
+                    width: '40%',
+                    ellipsis:true,
                 },
                 {
                     title: '操作',

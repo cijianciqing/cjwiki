@@ -122,7 +122,7 @@
                             <template #actions>
                                 <a-tag color="cyan">{{item.updateTime}}</a-tag>
 
-                                <a-popconfirm
+                                <a-popconfirm placement="leftTop"
                                         title="确认删除?"
                                         ok-text="Confirm"
                                         cancel-text="Cancel"
@@ -224,6 +224,14 @@
         },
         setup() {
 
+            /*
+            * 当页面加载时，自动获取所有的mission
+            * */
+            onMounted(() => {
+                // console.log("CategoryTable mounted......")
+                queryMission();
+                // queryMissionSteps(selectedMissionId.value);
+            });
 
             type CJMissionTableDataType = {
                 id: string,
@@ -233,22 +241,27 @@
                 taskImportant: number;
                 parentId: string;
             };
-
-
-            // const filteredInfo = ref();
-            // const filtered = filteredInfo.value || {};
+            /*
+            * ant-design-vue table组件基本配置
+            * */
             const columns = [
                 {
                     title: '标题',
                     dataIndex: 'taskName',
+                    width:"20%",
+                    // ellipsis: true,
                 },
                 {
                     title: '描述',
                     dataIndex: 'taskDesc',
+                    width:"30%",
+                    ellipsis: true,//超过长度后自动变为省略号。。。
                 },
                 {
                     title: '重要程度',
                     dataIndex: 'taskImportant',
+                    width:"15%",
+                    // ellipsis: true,
                     slots: {customRender: 'importantRender'},
                     sortDirections: ['descend', 'ascend'],
                     defaultSortOrder: 'descend',
@@ -261,6 +274,8 @@
                     title: '完成',
                     key: 'finishStatus',
                     dataIndex: 'finishStatus',
+                    width:"15%",
+                    // ellipsis: true,
                     slots: {customRender: 'finishRender'},
                     filters: [
                         { text: '进行中', value: '进行中' },
@@ -274,14 +289,13 @@
                 {
                     title: '操作',
                     key: 'action',
+                    width:"20%",
                     slots: {customRender: 'action'}
                 }
             ];
-            const selectedMissionId = ref<string>("0");
-            const missions = reactive({data: []});
-            const loading = ref(false);
+
             const tableRowSelection = {
-                type: "radio",
+                type: "radio",//单选
                 onSelect: function (record: any, selected: any, selectedRows: any, nativeEvent: any) {
                     console.log("record: ", record)
                     selectedMissionId.value = record.id//step-list同步变化
@@ -289,23 +303,47 @@
                     step.value.taskId = record.id
                     // console.log("selectedRows:",selectedRows)
                 }
-            };
+            }
+
+            //ant-design-vue table组件发生变化时
             const handleChange = (pagination:any, filters: any, sorter: any) => {
                 console.log('Various parameters', pagination, filters, sorter);
                 // filteredInfo.value = filters;
                 // sortedInfo.value = sorter;
             };
-            onMounted(() => {
-                // console.log("CategoryTable mounted......")
-                queryMission();
-                // queryMissionSteps(selectedMissionId.value);
-            });
 
+
+            /*
+            * mission操作
+            * */
+            const selectedMissionId = ref<string>("0");
+            const missions = reactive({data: []});
+            const loading = ref(false);
+
+            /*
+            * mission modal基本属性
+            * */
             const mission = ref({
                 parentId: "0"
             })
             const missionModalVisible = ref(false);
             const missionModalLoading = ref(false);
+            /**
+             * 查询mission--查找所有的mission
+             **/
+            const queryMission = () => {
+                loading.value = true;
+                axios.post("/wiki/mission/info/table"
+                ).then((response) => {
+                    loading.value = false;
+                    const data = response.data;
+                    if (data.code == process.env.VUE_APP_ResponseSuccess) {
+                        missions.data = data.data;
+                    } else {
+                        message.error(data.msg);
+                    }
+                });
+            };
             /*
             * 新增
             * */
@@ -338,22 +376,7 @@
                 });
             }
 
-            /**
-             * 查询数据
-             **/
-            const queryMission = () => {
-                loading.value = true;
-                axios.post("/wiki/mission/info/table"
-                ).then((response) => {
-                    loading.value = false;
-                    const data = response.data;
-                    if (data.code == process.env.VUE_APP_ResponseSuccess) {
-                        missions.data = data.data;
-                    } else {
-                        message.error(data.msg);
-                    }
-                });
-            };
+
             /*
             * 编辑mission
             * */
@@ -376,6 +399,8 @@
             };
 
 
+
+
             const step = ref({
                 taskId: "0"
             })
@@ -387,6 +412,8 @@
             const addStep = () => {
                 if (step.value.taskId != "0") {
                     stepModalVisible.value = true;
+                }else{
+                    message.info("请选择一个目标")
                 }
             }
             const clearStepModal = () => {

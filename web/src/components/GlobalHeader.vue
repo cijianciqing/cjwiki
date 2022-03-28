@@ -105,7 +105,6 @@
         setup() {
 
             const router = useRouter();
-
             //选中的菜单
             const currentRoute = ref([]);
             onMounted(()=>{
@@ -113,10 +112,7 @@
                 currentRoute.value = [router.currentRoute.value.path]
             })
 
-            // onMounted(() => {
-            //     // console.log("CategoryTable mounted......")
-            //     handleQuery();
-            // });
+
 
 
             const store = useStore()
@@ -138,22 +134,11 @@
                 // console.log("computed change",user)
                 return store.state.user
             })
-            // const user = watchEffect(() => {
-            //     store.state.user
-            //
-            // });
 
             // 登录
             const login = () => {
                 console.log("开始登录");
                 loginModalLoading.value = true;
-                // loginUser.value.password = hexMd5(loginUser.value.password + KEY);
-                //测试
-                // store.commit("setUser",
-                //     {
-                //         "id": 111,
-                //         "name":"u11"
-                //     });
                 axios.post('/cjauth', qs.stringify(loginUser)).then((response) => {
                     loginModalLoading.value = false;
                     const data = response.data;
@@ -169,13 +154,7 @@
                 }).finally(() => {
                     loginModalLoading.value = false;
                 })
-                //当返回的Http状态为500时执行以下命令
-                //     .catch(function (error) {
-                //     console.log("return error000");
-                //     console.log(error);
-                // })
-                ;
-            };
+            }
 
             // 登录
             const logout = () => {
@@ -193,14 +172,9 @@
                         message.error(data.msg);
                     }
                 })
-                //当返回的Http状态为500时执行以下命令
-                //     .catch(function (error) {
-                //     console.log("return error000");
-                //     console.log(error);
-                // })
-                ;
-            };
+            }
 
+            //音频播放
             const {play, isPlaying, stop, pause, sound} = useSound(buttonSfx, {
                 interrupt: true,//不重复播放
                 soundEnabled: true,//允许有声音？？？？
