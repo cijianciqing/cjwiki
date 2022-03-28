@@ -37,6 +37,7 @@ public class CjMissionInfoServiceImpl extends ServiceImpl<CjMissionInfoDao, CjMi
         //获取所有的cjMission
         QueryWrapper<CjMissionInfoEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderBy(true,true, "sort_no");
+//        queryWrapper.eq(true,"finish_status","进行中");
         List<CjMissionInfoEntity> cjMissionEntities = cjMissionInfoDao.selectList(queryWrapper);
         List<CJMissionResponse> convertor = cjDozerUtil.convertor(cjMissionEntities, CJMissionResponse.class);
 

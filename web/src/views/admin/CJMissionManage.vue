@@ -8,7 +8,7 @@
             <!--            </div>-->
         </a-layout-header>
         <a-row style="margin-top: 64px">
-            <a-col :span="14" style=" padding: 10px;">
+            <a-col :span="16" style=" padding: 10px;">
                 <a-form layout="inline">
                     <a-form-item>
                         <a-input placeholder="名称">
@@ -26,14 +26,14 @@
                     </a-form-item>
                 </a-form>
             </a-col>
-            <a-col :span="8" style=" padding: 10px;">
+            <a-col :span="6" style=" padding: 10px;">
                 <a-tag color="#55acee">
                     <template #icon>
-                        <twitter-outlined />
+                        <twitter-outlined/>
                     </template>
                     Mission:
                 </a-tag>
-                <a-tag >目标进展</a-tag>
+                <a-tag>目标进展</a-tag>
 
             </a-col>
             <a-col :span="2" style=" padding: 10px;">
@@ -50,7 +50,7 @@
         -->
 
         <a-row :gutter="16">
-            <a-col style="background-color: lightskyblue;" :span="14">
+            <a-col style="background-color: lightskyblue;" :span="16">
                 <a-table
                         :columns="columns"
                         :row-key="record => record.id"
@@ -58,12 +58,18 @@
                         :loading="loading"
                         :pagination="false"
                         :row-selection="tableRowSelection"
+                        @change="handleChange"
                 >
-                    <template v-slot:importantRender ="{ text: cjImportant,record,index }">
+                    <template v-slot:importantRender="{ text: cjImportant,record,index }">
                         <a-tag v-if="parseInt(cjImportant) > 7" color="red">非常重要</a-tag>
-                        <a-tag v-if=" parseInt(cjImportant)> 4  &&  parseInt(cjImportant)< 8 "  color="orange">重要</a-tag>
-                        <a-tag v-if=" parseInt(cjImportant)> 0  &&  parseInt(cjImportant)< 4  "  color="blue">普通</a-tag>
+                        <a-tag v-if=" parseInt(cjImportant)> 4  &&  parseInt(cjImportant)< 8 " color="orange">重要</a-tag>
+                        <a-tag v-if=" parseInt(cjImportant)> 0  &&  parseInt(cjImportant)< 4  " color="blue">普通</a-tag>
                         <a-tag v-if="parseInt(cjImportant) === 0" color="cyan">无所谓</a-tag>
+                    </template>
+
+                    <template v-slot:finishRender="{ text: cjFinish,record,index }">
+                        <a-tag v-if="cjFinish === '进行中' " color="green">进行中</a-tag>
+                        <a-tag v-if="cjFinish === '已完成' " color="red">已完成</a-tag>
                     </template>
 
                     <template v-slot:action="{ text, record }">
@@ -72,7 +78,7 @@
                                 <template #title>编辑Mission</template>
                                 <a-button type="primary" shape="circle" @click="editMission(record)">
                                     <template #icon>
-                                        <EditOutlined />
+                                        <EditOutlined/>
                                     </template>
                                 </a-button>
                             </a-tooltip>
@@ -82,10 +88,12 @@
                                     cancel-text="Cancel"
                                     @confirm="delMission(record.id)"
                             >
-                                <template #icon><question-circle-outlined style="color: red" /></template>
+                                <template #icon>
+                                    <question-circle-outlined style="color: red"/>
+                                </template>
                                 <a-button type="primary" danger shape="circle">
                                     <template #icon>
-                                        <CloseCircleOutlined />
+                                        <CloseCircleOutlined/>
                                     </template>
                                 </a-button>
                             </a-popconfirm>
@@ -93,7 +101,7 @@
                     </template>
                 </a-table>
             </a-col>
-            <a-col :span="10">
+            <a-col :span="8">
                 <a-list item-layout="horizontal" :data-source="steps">
                     <template #renderItem="{ item }">
                         <a-list-item>
@@ -120,7 +128,7 @@
                                         cancel-text="Cancel"
                                         @confirm="delMissionStep(item.id)"
                                 >
-                                    <a-button type="text" danger >del</a-button>
+                                    <a-button type="text" danger>del</a-button>
                                 </a-popconfirm>
 
 
@@ -155,14 +163,22 @@
 
             <a-form-item label="重要程度">
 
-                <a-input-number id="inputNumber" v-model:value="mission.taskImportant" :min="0" :max="10" />
-<!--                <a-radio-group v-model:value="mission.taskImportant" button-style="solid">-->
-<!--                    <a-radio-button value="veryImportant">非常重要</a-radio-button>-->
-<!--                    <a-radio-button value="important">重要</a-radio-button>-->
-<!--                    <a-radio-button value="normal">普通</a-radio-button>-->
-<!--                    <a-radio-button value="noMatter">随便</a-radio-button>-->
-<!--                </a-radio-group>-->
+                <a-input-number id="inputNumber" v-model:value="mission.taskImportant" :min="0" :max="10"/>
+                <!--                <a-radio-group v-model:value="mission.taskImportant" button-style="solid">-->
+                <!--                    <a-radio-button value="veryImportant">非常重要</a-radio-button>-->
+                <!--                    <a-radio-button value="important">重要</a-radio-button>-->
+                <!--                    <a-radio-button value="normal">普通</a-radio-button>-->
+                <!--                    <a-radio-button value="noMatter">随便</a-radio-button>-->
+                <!--                </a-radio-group>-->
             </a-form-item>
+
+            <a-form-item label="重要程度">
+                <a-radio-group v-model:value="mission.finishStatus" button-style="solid">
+                    <a-radio-button value="进行中">进行中</a-radio-button>
+                    <a-radio-button value="已完成">已完成</a-radio-button>
+                </a-radio-group>
+            </a-form-item>
+
             <a-form-item label="内容">
                 <a-textarea v-model:value="mission.taskContent" auto-size/>
             </a-form-item>
@@ -193,7 +209,7 @@
 
 </template>
 <script lang="ts">
-    import {defineComponent, onMounted, reactive, ref, toRef, watch,computed} from 'vue';
+    import {defineComponent, onMounted, reactive, ref, toRef, watch, computed} from 'vue';
     import GlobalHeader from "@/components/GlobalHeader.vue";
     // import CJMission from "@/components/mission/CJMissionInfo.vue";
     import axios from "axios";
@@ -209,7 +225,6 @@
         setup() {
 
 
-
             type CJMissionTableDataType = {
                 id: string,
                 taskName: string;
@@ -220,6 +235,8 @@
             };
 
 
+            // const filteredInfo = ref();
+            // const filtered = filteredInfo.value || {};
             const columns = [
                 {
                     title: '标题',
@@ -234,26 +251,25 @@
                     dataIndex: 'taskImportant',
                     slots: {customRender: 'importantRender'},
                     sortDirections: ['descend', 'ascend'],
-                    defaultSortOrder:'descend',
-                    sorter: (a:CJMissionTableDataType,b:CJMissionTableDataType)=>{
-                        // const getImportantValue = (ab:CJMissionTableDataType)=>{
-                        //     if(ab.taskImportant==="veryImportant"){
-                        //         return 1
-                        //     }
-                        //     if(ab.taskImportant==="important"){
-                        //         return 2
-                        //     }
-                        //     if(ab.taskImportant==="normal"){
-                        //         return 3
-                        //     }
-                        //     if(ab.taskImportant==="noMatter"){
-                        //         return 4
-                        //     }
-                        //     return 0
-                        // }
-                        // console.log(a.taskName,'--->',b.taskName,'--->',getImportantValue(a) - getImportantValue(b))
+                    defaultSortOrder: 'descend',
+                    sorter: (a: CJMissionTableDataType, b: CJMissionTableDataType) => {
+
                         return a.taskImportant - b.taskImportant
                     }
+                },
+                {
+                    title: '完成',
+                    key: 'finishStatus',
+                    dataIndex: 'finishStatus',
+                    slots: {customRender: 'finishRender'},
+                    filters: [
+                        { text: '进行中', value: '进行中' },
+                        { text: '已完成', value: '已完成' },
+                    ],
+                    // filteredValue: filtered.name || null,
+                    // filteredValue: ["进行中","已完成"],
+                    onFilter: (value: string, record: any) => record.finishStatus.includes(value),
+                    defaultFilteredValue:["进行中"]
                 },
                 {
                     title: '操作',
@@ -267,12 +283,17 @@
             const tableRowSelection = {
                 type: "radio",
                 onSelect: function (record: any, selected: any, selectedRows: any, nativeEvent: any) {
-                    console.log("record: ",record)
+                    console.log("record: ", record)
                     selectedMissionId.value = record.id//step-list同步变化
-                    mission.value.parentId=record.id//用于模态框提交过程中parentId设置
-                    step.value.taskId=record.id
+                    mission.value.parentId = record.id//用于模态框提交过程中parentId设置
+                    step.value.taskId = record.id
                     // console.log("selectedRows:",selectedRows)
                 }
+            };
+            const handleChange = (pagination:any, filters: any, sorter: any) => {
+                console.log('Various parameters', pagination, filters, sorter);
+                // filteredInfo.value = filters;
+                // sortedInfo.value = sorter;
             };
             onMounted(() => {
                 // console.log("CategoryTable mounted......")
@@ -281,25 +302,25 @@
             });
 
             const mission = ref({
-                                   parentId:"0"
-                                    })
+                parentId: "0"
+            })
             const missionModalVisible = ref(false);
             const missionModalLoading = ref(false);
             /*
             * 新增
             * */
-            const addMission = ()=>{
-                missionModalVisible.value=true;
+            const addMission = () => {
+                missionModalVisible.value = true;
             }
-            const clearMissionModal = ()=>{
-                mission.value={parentId: selectedMissionId.value}
-                }
+            const clearMissionModal = () => {
+                mission.value = {parentId: selectedMissionId.value}
+            }
 
-            const missionModalCancel = ()=>{
+            const missionModalCancel = () => {
                 clearMissionModal()
-                }
+            }
 
-            const missionModalOk= ()=>{
+            const missionModalOk = () => {
                 missionModalLoading.value = true;
 
                 axios.post("/wiki/mission/info/save", mission.value).then((response) => {
@@ -336,8 +357,8 @@
             /*
             * 编辑mission
             * */
-            const editMission = (record:any)=>{
-                missionModalVisible.value=true;
+            const editMission = (record: any) => {
+                missionModalVisible.value = true;
                 mission.value = Tool.copy(record);//复制数据，不影响源数据
             }
             /**
@@ -355,29 +376,28 @@
             };
 
 
-
             const step = ref({
-                taskId:"0"
+                taskId: "0"
             })
             const stepModalVisible = ref(false);
             const stepModalLoading = ref(false);
             /*
            * 新增
            * */
-            const addStep = ()=>{
-                if(step.value.taskId != "0"){
-                    stepModalVisible.value=true;
+            const addStep = () => {
+                if (step.value.taskId != "0") {
+                    stepModalVisible.value = true;
                 }
             }
-            const clearStepModal = ()=>{
-                step.value={taskId: selectedMissionId.value}
+            const clearStepModal = () => {
+                step.value = {taskId: selectedMissionId.value}
             }
 
-            const stepModalCancel = ()=>{
+            const stepModalCancel = () => {
                 clearStepModal()
             }
 
-            const stepModalOk= ()=>{
+            const stepModalOk = () => {
                 stepModalLoading.value = true;
 
                 axios.post("/wiki/mission/step/save", step.value).then((response) => {
@@ -448,6 +468,7 @@
                 columns,
                 loading,
                 tableRowSelection,
+                handleChange,
 
 
                 //mission的curd

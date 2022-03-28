@@ -44,4 +44,7 @@ public class CJMissionSaveRequest {
     @NotBlank(message = "【mission.pid】不能为空")
     private String parentId;
 
+    @NotBlank(message = "【mission.finishStatus】不能为空")
+    private String finishStatus;
+
 }
