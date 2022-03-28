@@ -1,12 +1,12 @@
 <template>
 
     <div class="logo"/>
-    <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px',display: 'block' }"><!---->
+    <a-menu v-model:selectedKeys="currentRoute" theme="dark" mode="horizontal" :style="{ lineHeight: '64px',display: 'block' }"><!---->
 
         <a-menu-item key="/">
             <router-link to="/">首页</router-link>
         </a-menu-item>
-        <a-menu-item key="/admin/mission">
+        <a-menu-item key="/admin/mission" >
             <router-link to="/admin/mission">目标管理</router-link>
         </a-menu-item>
         <a-menu-item key="/admin/article">
@@ -90,7 +90,7 @@
 </template>
 
 <script>
-    import {defineComponent, ref, computed, reactive} from 'vue';
+    import {defineComponent, ref, computed, reactive, onMounted} from 'vue';
     import axios from 'axios';
     import {message} from 'ant-design-vue';
     import {useStore} from 'vuex'
@@ -98,10 +98,26 @@
     import cjStore from "@/store";
     import {useSound} from '@vueuse/sound'
     import buttonSfx from '@/assets/excuse.mp3'
+    import {useRouter} from 'vue-router'
 
     export default {
         name: "GlobalHeader",
         setup() {
+
+            const router = useRouter();
+
+            //选中的菜单
+            const currentRoute = ref([]);
+            onMounted(()=>{
+                console.log("当前route:",router.currentRoute.value)
+                currentRoute.value = [router.currentRoute.value.path]
+            })
+
+            // onMounted(() => {
+            //     // console.log("CategoryTable mounted......")
+            //     handleQuery();
+            // });
+
 
             const store = useStore()
 
@@ -192,6 +208,8 @@
 
 
             return {
+                currentRoute,
+
                 loginModalVisible,
                 loginModalLoading,
                 showLoginModal,
