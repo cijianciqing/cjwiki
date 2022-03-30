@@ -59,7 +59,11 @@
                         :pagination="false"
                         :row-selection="tableRowSelection"
                         @change="handleChange"
+                        :rowClassName="cjTableRowClass"
+                        :customHeaderRow="cjTableHeaderRow"
                 >
+
+                    <!-- bordered 带边框-->
                     <template v-slot:importantRender="{ text: cjImportant,record,index }">
                         <a-tag v-if="parseInt(cjImportant) > 7" color="red">非常重要</a-tag>
                         <a-tag v-if=" parseInt(cjImportant)> 4  &&  parseInt(cjImportant)< 8 " color="orange">重要</a-tag>
@@ -237,6 +241,7 @@
                 // queryMissionSteps(selectedMissionId.value);
             });
 
+
             type CJMissionTableDataType = {
                 id: string,
                 taskName: string;
@@ -253,6 +258,7 @@
                     title: '标题',
                     dataIndex: 'taskName',
                     width:"20%",
+                    // slots: { title: 'customColumnTitle' }
                     // ellipsis: true,
                 },
                 {
@@ -309,6 +315,25 @@
                 }
             }
 
+            const cjTableHeaderRow = (column:any , index:any)=>{
+                return {
+                    class: "cjTableHeaderClass",//此css属性大多被覆盖。。。。
+                    on: {//不好用
+                        click: () => {
+                            console.log("click the table header")
+                        },        // 点击表头行
+                    }
+                }
+            }
+
+            const cjTableRowClass = (record:any, index:number)=>{
+                if(index%2 == 1){
+                    return "cjTableRowClass"
+                }
+                return null
+            }
+
+
             //ant-design-vue table组件发生变化时
             const handleChange = (pagination:any, filters: any, sorter: any) => {
                 console.log('Various parameters', pagination, filters, sorter);
@@ -332,6 +357,8 @@
                     parentId: "0"//用于添加子任务
                 }
             })
+
+
             const missionModalVisible = ref(false);
             const missionModalLoading = ref(false);
             /**
@@ -368,6 +395,7 @@
             * 清空mission modal
             * */
             const clearMissionModal = () => {
+                // mission.data.ppp = "ccc"
                 mission.data = {parentId: selectedMissionId.value}
             }
 
@@ -500,7 +528,8 @@
                 loading,
                 tableRowSelection,
                 handleChange,
-
+                cjTableRowClass,
+                cjTableHeaderRow,
 
                 //mission的curd
                 selectedMissionId,
@@ -534,6 +563,15 @@
     });
 </script>
 <style>
+    .cjTableHeaderClass{
+        /*font-size: large;*/
+        font-family: "Times New Roman",Georgia,Serif,serif;
+        text-align:center;
+
+    }
+    .cjTableRowClass {
+        background-color: #F1F3F4;
+    }
     #components-layout-demo-fixed .logo {
         width: 120px;
         height: 31px;

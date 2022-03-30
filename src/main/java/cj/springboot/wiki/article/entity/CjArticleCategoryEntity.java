@@ -39,6 +39,11 @@ public class CjArticleCategoryEntity extends CJBaseColmns {
     @TableField("fontIcon")
     private String fontIcon;
 
+    {
+        parentId="0";
+        sortNo=0;
+    }
+
     public String getId() {
         return id;
     }

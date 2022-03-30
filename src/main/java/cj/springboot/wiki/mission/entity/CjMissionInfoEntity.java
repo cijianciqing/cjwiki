@@ -5,12 +5,13 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author cj
@@ -52,7 +53,8 @@ public class CjMissionInfoEntity extends CJBaseColmns {
     private String finishStatus;
 
     {
-        finishStatus="进行中";
+        finishStatus = "进行中";
+        parentId = "0";
     }
 
     public String getId() {
@@ -62,6 +64,7 @@ public class CjMissionInfoEntity extends CJBaseColmns {
     public void setId(String id) {
         this.id = id;
     }
+
     public String getTaskName() {
         return taskName;
     }
@@ -69,6 +72,7 @@ public class CjMissionInfoEntity extends CJBaseColmns {
     public void setTaskName(String taskName) {
         this.taskName = taskName;
     }
+
     public String getTaskDesc() {
         return taskDesc;
     }
@@ -76,6 +80,7 @@ public class CjMissionInfoEntity extends CJBaseColmns {
     public void setTaskDesc(String taskDesc) {
         this.taskDesc = taskDesc;
     }
+
     public String getTaskContent() {
         return taskContent;
     }
@@ -83,6 +88,7 @@ public class CjMissionInfoEntity extends CJBaseColmns {
     public void setTaskContent(String taskContent) {
         this.taskContent = taskContent;
     }
+
     public String getTaskPrincipal() {
         return taskPrincipal;
     }
@@ -90,6 +96,7 @@ public class CjMissionInfoEntity extends CJBaseColmns {
     public void setTaskPrincipal(String taskPrincipal) {
         this.taskPrincipal = taskPrincipal;
     }
+
     public Integer getTaskImportant() {
         return taskImportant;
     }
@@ -97,6 +104,7 @@ public class CjMissionInfoEntity extends CJBaseColmns {
     public void setTaskImportant(Integer taskImportant) {
         this.taskImportant = taskImportant;
     }
+
     public LocalDateTime getStartTime() {
         return startTime;
     }
@@ -104,6 +112,7 @@ public class CjMissionInfoEntity extends CJBaseColmns {
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
+
     public LocalDateTime getEndTime() {
         return endTime;
     }
@@ -111,6 +120,7 @@ public class CjMissionInfoEntity extends CJBaseColmns {
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
+
     public String getParentId() {
         return parentId;
     }
@@ -130,16 +140,16 @@ public class CjMissionInfoEntity extends CJBaseColmns {
     @Override
     public String toString() {
         return "CjMissionInfoEntity{" +
-            "id=" + id +
-            ", taskName=" + taskName +
-            ", taskDesc=" + taskDesc +
-            ", taskContent=" + taskContent +
-            ", taskPrincipal=" + taskPrincipal +
-            ", taskImportant=" + taskImportant +
-            ", startTime=" + startTime +
-            ", endTime=" + endTime +
-            ", parentId=" + parentId +
-            ", finishStatus=" + finishStatus +
-        "}";
+                "id=" + id +
+                ", taskName=" + taskName +
+                ", taskDesc=" + taskDesc +
+                ", taskContent=" + taskContent +
+                ", taskPrincipal=" + taskPrincipal +
+                ", taskImportant=" + taskImportant +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", parentId=" + parentId +
+                ", finishStatus=" + finishStatus +
+                "}";
     }
 }

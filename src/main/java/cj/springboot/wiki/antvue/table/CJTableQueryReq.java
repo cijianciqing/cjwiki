@@ -1,6 +1,6 @@
 package cj.springboot.wiki.antvue.table;
 
-import cj.springboot.wiki.dto.req.CJPageReq;
+import cj.springboot.wiki.util.dto.CJPageReq;
 import lombok.*;
 
 @Data

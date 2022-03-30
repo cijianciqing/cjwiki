@@ -47,7 +47,7 @@ axios.interceptors.response.use(function (response) {
 
 // import {CJAxiosConfig } from "./CJGlobalConfig/axios.js"
 
-const app = createApp(App);
+const app = createApp(App)
 app.use(cjStore)
     .use(router)
     .use(Antd)

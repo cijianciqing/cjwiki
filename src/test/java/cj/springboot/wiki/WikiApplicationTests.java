@@ -1,8 +1,12 @@
 package cj.springboot.wiki;
 
 import cj.springboot.wiki.antvue.table.CJTableQueryReq;
+import cj.springboot.wiki.article.dao.CjArticleCategoryDao;
 import cj.springboot.wiki.article.dao.CjArticleDao;
+import cj.springboot.wiki.article.entity.CjArticleCategoryEntity;
 import cj.springboot.wiki.article.entity.CjArticleEntity;
+import cj.springboot.wiki.mission.dao.CjMissionInfoDao;
+import cj.springboot.wiki.mission.entity.CjMissionInfoEntity;
 import cn.hutool.json.JSONUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +35,22 @@ class WikiApplicationTests {
         cjTableQueryReq.setCategoryId("21");
         List<CjArticleEntity> articlesByRootId = cjArticleDao.getArticlesByRequest(cjTableQueryReq);
         articlesByRootId.forEach(cjArticleEntity -> System.out.println(cjArticleEntity.getName()));
+    }
+
+    @Autowired
+    CjMissionInfoDao cjMissionInfoDao;
+
+    @Test
+    public void testAutoInject(){
+        CjMissionInfoEntity cjMissionInfoEntity = new CjMissionInfoEntity();
+        cjMissionInfoDao.insert(cjMissionInfoEntity);
+    }
+
+    @Autowired
+    CjArticleCategoryDao cjArticleCategoryDao;
+    @Test
+    public void testAutoInject2(){
+        CjArticleCategoryEntity cjArticleCategoryEntity = new CjArticleCategoryEntity();
+        cjArticleCategoryDao.insert(cjArticleCategoryEntity);
     }
 }

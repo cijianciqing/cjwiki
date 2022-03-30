@@ -1,4 +1,4 @@
-package cj.springboot.wiki.dto.req;
+package cj.springboot.wiki.util.dto;
 
 import lombok.Getter;
 import lombok.Setter;

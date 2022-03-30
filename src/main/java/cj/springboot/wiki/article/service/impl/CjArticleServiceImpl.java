@@ -7,7 +7,7 @@ import cj.springboot.wiki.article.dto.CjArticleSaveRequest;
 import cj.springboot.wiki.article.entity.CjArticleEntity;
 import cj.springboot.wiki.article.dao.CjArticleDao;
 import cj.springboot.wiki.article.service.CjArticleService;
-import cj.springboot.wiki.dto.req.CJPageReq;
+import cj.springboot.wiki.util.dto.CJPageReq;
 import cn.com.ns.cj.cjuniversalspringbootstarter.dozer.CJDozerUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;

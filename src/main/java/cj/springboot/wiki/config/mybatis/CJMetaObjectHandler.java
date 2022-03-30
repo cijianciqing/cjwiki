@@ -32,10 +32,11 @@ public class CJMetaObjectHandler implements MetaObjectHandler {
 
         /*
         * 以下这两个字段，可以考虑放到初始代码块中。。
+        * 好用
         * */
 
         this.strictInsertFill(metaObject, "sortNo", Integer.class, 0);
-        this.strictInsertFill(metaObject, "parentId", String.class, "0");
+//        this.strictInsertFill(metaObject, "parentId", String.class, "0");
 
 //        if (metaObject.hasGetter("createTime") && metaObject.hasGetter("updateTime")) {
 //            setFieldValByName("createTime", new Date(), metaObject);
