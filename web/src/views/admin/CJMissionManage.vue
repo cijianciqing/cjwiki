@@ -79,6 +79,14 @@
                     <template v-slot:action="{ text, record }">
                         <a-space size="small">
                             <a-tooltip>
+                                <template #title>新增Mission</template>
+                                <a-button type="primary" shape="circle" @click="addChildMission(record.id)">
+                                    <template #icon>
+                                        <EditOutlined/>
+                                    </template>
+                                </a-button>
+                            </a-tooltip>
+                            <a-tooltip>
                                 <template #title>编辑Mission</template>
                                 <a-button type="primary" shape="circle" @click="editMission(record)">
                                     <template #icon>
@@ -309,7 +317,7 @@
                 onSelect: function (record: any, selected: any, selectedRows: any, nativeEvent: any) {
                     console.log("record: ", record)
                     selectedMissionId.value = record.id//step-list同步变化
-                    mission.data.parentId = record.id//用于新增子任务过程中，模态框提交时parentId设置
+                    // mission.data.parentId = record.id//用于新增子任务过程中，模态框提交时parentId设置
                     step.data.taskId = record.id
                     // console.log("selectedRows:",selectedRows)
                 }
@@ -380,8 +388,13 @@
             /*
             * 新增
             * */
-            const addMission = () => {
+            const addMission = () => {//添加第一级mission
                 missionModalVisible.value = true;
+                mission.data.parentId="0"
+            }
+            const addChildMission = (missionId:string) => {//添加 child mission
+                missionModalVisible.value = true;
+                mission.data.parentId=missionId
             }
             /*
               * 编辑mission
@@ -449,7 +462,7 @@
            * 新增
            * */
             const addStep = () => {
-                if (step.data.taskId != "0") {
+                if (selectedMissionId.value != "0") {
                     stepModalVisible.value = true;
                 }else{
                     message.info("请选择一个目标")
@@ -535,6 +548,7 @@
                 selectedMissionId,
                 mission: toRef(mission, 'data'),
                 addMission,
+                addChildMission,
                 queryMission,
                 missionModalVisible,
                 missionModalLoading,
