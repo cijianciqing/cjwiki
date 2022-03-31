@@ -212,7 +212,7 @@
                 <a-input v-model:value="step.title"/>
             </a-form-item>
             <a-form-item label="描述">
-                <a-input v-model:value="step.description" type="textarea"/>
+                <a-textarea v-model:value="step.description" auto-size/>
             </a-form-item>
 
         </a-form>
