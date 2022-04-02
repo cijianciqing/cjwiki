@@ -1,5 +1,6 @@
 package cj.springboot.wiki.antvue.list;
 
+import cj.springboot.wiki.mission.entity.CjMissionStepEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +17,4 @@ public class CJListResponse {
     private String title;
     private String description;
 
-    private LocalDateTime updateTime;
 }

@@ -33,7 +33,7 @@ public class CjMissionStepServiceImpl extends ServiceImpl<CjMissionStepDao, CjMi
     @Autowired
     CjMissionStepDao cjMissionStepDao;
 
-    public List<CJListResponse> getMissionSteps(String missionId) {
+    public List<CjMissionStepEntity> getMissionSteps(String missionId) {
         QueryWrapper<CjMissionStepEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("task_id",missionId);
         List<String> columns = new ArrayList<>();
@@ -43,7 +43,7 @@ public class CjMissionStepServiceImpl extends ServiceImpl<CjMissionStepDao, CjMi
 
         List<CjMissionStepEntity> cjMissionStepEntities = cjMissionStepDao.selectList(queryWrapper);
 
-        return cjDozerUtil.convertor(cjMissionStepEntities,CJListResponse.class);
+        return cjMissionStepEntities;
 
     }
 

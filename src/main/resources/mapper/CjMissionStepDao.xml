@@ -11,6 +11,7 @@
         <result column="avatar" property="avatar" />
         <result column="title" property="title" />
         <result column="description" property="description" />
+        <result column="step_content" property="stepContent" />
     </resultMap>
 
 </mapper>

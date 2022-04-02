@@ -34,4 +34,6 @@ public class CJMissionSetpSaveRequest {
     @NotBlank(message = "【missionStep.mission】不能为空")
     private String taskId;
 
+    private String stepContent;
+
 }

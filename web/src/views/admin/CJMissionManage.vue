@@ -140,6 +140,7 @@
                             <template #actions>
                                 <a-tag color="cyan">{{item.updateTime}}</a-tag>
 
+                                <a-button type="text" @click="editMissionStep(item)">edit</a-button>
                                 <a-popconfirm placement="leftTop"
                                         title="确认删除?"
                                         ok-text="Confirm"
@@ -166,12 +167,13 @@
 
     <a-drawer
             title="Mission Form"
-            :width="720"
+            width="90%"
             :visible="missionModalVisible"
             :body-style="{ paddingBottom: '80px' }"
             @close="missionModalCancel"
+            :afterVisibleChange="afterMissionVisibleChange"
     >
-        <a-form :model="mission"  layout="vertical">
+        <a-form :model="step"  layout="vertical">
 
             <a-row :gutter="16">
                 <a-col :span="12">
@@ -225,9 +227,12 @@
             <a-row :gutter="16">
                 <a-col :span="24">
                     <a-form-item label="内容">
-                        <a-textarea v-model:value="mission.taskContent" auto-size
-                                    placeholder="please enter mission content"
-                        />
+<!--                        <a-textarea v-model:value="mission.taskContent" auto-size-->
+<!--                                    placeholder="please enter mission content"-->
+<!--                        />-->
+                        <div id="wangEditor_mission">
+
+                        </div>
                     </a-form-item>
                 </a-col>
             </a-row>
@@ -251,26 +256,87 @@
 
         </div>
     </a-drawer>
-    <a-modal
-            title="MissionStep Form"
-            v-model:visible="stepModalVisible"
-            :confirm-loading="stepModalLoading"
-            @ok="stepModalOk"
-            @cancel="stepModalCancel"
 
+
+    <a-drawer
+            title="Step Form"
+            width="90%"
+            :visible="stepModalVisible"
+            :body-style="{ paddingBottom: '80px' }"
+            @close="stepModalCancel"
+            :afterVisibleChange="afterStepVisibleChange"
     >
-        <a-form :model="step" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+        <a-form :model="mission"  layout="vertical">
 
-            <a-form-item label="标题">
-                <a-input v-model:value="step.title"/>
-            </a-form-item>
-            <a-form-item label="描述">
-                <a-textarea v-model:value="step.description" auto-size/>
-            </a-form-item>
+            <a-row :gutter="16">
+                <a-col :span="12">
+                    <a-form-item label="创建时间">
+                        <a-tag color="cyan">{{step.createTime}}</a-tag>
+                    </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                    <a-form-item label="最近更新时间">
+                        <a-tag color="cyan">{{step.updateTime}}</a-tag>
+                    </a-form-item>
+                </a-col>
+            </a-row>
+
+            <a-row :gutter="16">
+                <a-col :span="12">
+                    <a-form-item label="标题">
+                        <a-input id="inputNumber" v-model:value="step.title" />
+                    </a-form-item>
+                </a-col>
+                <a-col :span="12">
+
+                </a-col>
+            </a-row>
+
+
+            <a-row :gutter="16">
+                <a-col :span="24">
+                    <a-form-item label="描述" name="description">
+                        <a-textarea
+                                v-model:value="step.description"
+                                :rows="4"
+                                placeholder="please enter step description"
+                        />
+                    </a-form-item>
+                </a-col>
+            </a-row>
+            <a-row :gutter="16">
+                <a-col :span="24">
+                    <a-form-item label="内容">
+                        <!--                        <a-textarea v-model:value="mission.taskContent" auto-size-->
+                        <!--                                    placeholder="please enter mission content"-->
+                        <!--                        />-->
+                        <div id="wangEditor_step">
+
+                        </div>
+                    </a-form-item>
+                </a-col>
+            </a-row>
 
         </a-form>
+        <div
+                :style="{
+        position: 'absolute',
+        right: 0,
+        bottom: 0,
+        width: '100%',
+        borderTop: '1px solid #e9e9e9',
+        padding: '10px 16px',
+        background: '#fff',
+        textAlign: 'right',
+        zIndex: 1,
+      }"
+        >
+            <a-button style="margin-right: 8px" @click="stepModalCancel">Cancel</a-button>
+            <a-button type="primary" @click="stepModalOk">Submit</a-button>
 
-    </a-modal>
+        </div>
+    </a-drawer>
+
 
 </template>
 <script lang="ts">
@@ -280,6 +346,7 @@
     import axios from "axios";
     import {message} from "ant-design-vue";
     import {Tool} from "@/util/tool";
+    import E from 'wangeditor'
 
 /*
 * 对于有id-pid的数据
@@ -302,6 +369,29 @@
                 // queryMissionSteps(selectedMissionId.value);
             });
 
+            let wangEditor_mission: any;
+            const createWangEditor = () => {
+                wangEditor_mission = new E("#wangEditor_mission")
+                wangEditor_mission.create()
+                //图片上传-配置服务端接口
+                wangEditor_mission.config.uploadImgServer = process.env.VUE_APP_BackEndServer+'/wiki/article/wangeditor/upload/file'
+                //图片上传-自定义 timeout 时间
+                wangEditor_mission.config.uploadImgTimeout = 20 * 1000
+                //关闭粘贴样式的过滤
+                wangEditor_mission.config.pasteFilterStyle = false
+            }
+
+            let wangEditor_step: any;
+            const createWangEditor_step = () => {
+                wangEditor_step = new E("#wangEditor_step")
+                wangEditor_step.create()
+                //图片上传-配置服务端接口
+                wangEditor_step.config.uploadImgServer = process.env.VUE_APP_BackEndServer+'/wiki/article/wangeditor/upload/file'
+                //图片上传-自定义 timeout 时间
+                wangEditor_step.config.uploadImgTimeout = 20 * 1000
+                //关闭粘贴样式的过滤
+                wangEditor_step.config.pasteFilterStyle = false
+            }
 
             type CJMissionTableDataType = {
                 id: string,
@@ -415,13 +505,23 @@
             * */
             const mission = reactive({
                 data:{
-                    parentId: "0"//用于添加子任务
+                    parentId: "0",//用于添加子任务
+                    taskContent:"",
                 }
             })
 
-
             const missionModalVisible = ref(false);
             const missionModalLoading = ref(false);
+
+            const afterMissionVisibleChange = (visible:boolean)=>{
+                // console.log("afterMissionVisibleChange:" ,visible)
+                if(visible){
+                    createWangEditor()
+                    if(mission.data.taskContent !=""){
+                        wangEditor_mission.txt.html(mission.data.taskContent);
+                    }
+                }
+            }
             /**
              * 查询mission--查找所有的mission
              **/
@@ -461,8 +561,15 @@
             * 清空mission modal
             * */
             const clearMissionModal = () => {
-                // mission.data.ppp = "ccc"
-                mission.data = {parentId: selectedMissionId.value}
+                // 销毁wangEditor_mission
+                if(wangEditor_mission){
+                    wangEditor_mission.destroy()
+                }
+                //清空mission内容
+                mission.data = {
+                    taskContent: "",
+                    parentId: selectedMissionId.value
+                }
             }
 
             const missionModalCancel = () => {
@@ -472,7 +579,7 @@
 
             const missionModalOk = () => {
                 missionModalLoading.value = true;
-
+                mission.data.taskContent = wangEditor_mission.txt.html()
                 axios.post("/wiki/mission/info/save", mission.data).then((response) => {
                     const data = response.data; // data = commonResp
                     if (data.code == process.env.VUE_APP_ResponseSuccess) {
@@ -507,11 +614,21 @@
 
             const step = reactive({
                 data:{
-                    taskId: "0"//代表:初始情况下未选中任何mission
+                    taskId: "0",//代表:初始情况下未选中任何mission
+                    stepContent:""
                 }
             })
             const stepModalVisible = ref(false);
             const stepModalLoading = ref(false);
+            const afterStepVisibleChange = (visible:boolean)=>{
+                // console.log("afterMissionVisibleChange:" ,visible)
+                if(visible){
+                    createWangEditor_step()
+                    if(step.data.stepContent !=""){
+                        wangEditor_step.txt.html(step.data.stepContent);
+                    }
+                }
+            }
             /*
            * 新增
            * */
@@ -522,17 +639,28 @@
                     message.info("请选择一个目标")
                 }
             }
+            const editMissionStep = (item:any)=>{
+                stepModalVisible.value = true;
+                step.data = Tool.copy(item);//复制数据，不影响源数据
+                }
+
             const clearStepModal = () => {
-                step.data = {taskId: selectedMissionId.value}
+                // 销毁wangEditor_step
+                if(wangEditor_step){
+                    wangEditor_step.destroy()
+                }
+                //清空mission内容
+                step.data = {stepContent: "", taskId: selectedMissionId.value}
             }
 
             const stepModalCancel = () => {
+                stepModalVisible.value = false;
                 clearStepModal()
             }
 
             const stepModalOk = () => {
                 stepModalLoading.value = true;
-
+                step.data.stepContent = wangEditor_step.txt.html()
                 axios.post("/wiki/mission/step/save", step.data).then((response) => {
                     const data = response.data; // data = commonResp
                     if (data.code == process.env.VUE_APP_ResponseSuccess) {
@@ -600,6 +728,7 @@
 
                 //mission的curd
                 selectedMissionId,
+                afterMissionVisibleChange,
                 mission: toRef(mission, 'data'),
                 addMission,
                 addChildMission,
@@ -617,10 +746,12 @@
                 * */
                 steps : toRef(steps, 'data'),
                 step  : toRef(step, 'data'),
+                afterStepVisibleChange,
                 stepModalVisible,
                 stepModalLoading,
                 queryMissionSteps,
                 addStep,
+                editMissionStep,
                 stepModalOk,
                 stepModalCancel,
                 delMissionStep,

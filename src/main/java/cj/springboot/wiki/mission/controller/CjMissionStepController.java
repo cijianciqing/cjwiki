@@ -4,6 +4,7 @@ package cj.springboot.wiki.mission.controller;
 import cj.springboot.wiki.antvue.list.CJListResponse;
 import cj.springboot.wiki.mission.dto.CJMissionSaveRequest;
 import cj.springboot.wiki.mission.dto.CJMissionSetpSaveRequest;
+import cj.springboot.wiki.mission.entity.CjMissionStepEntity;
 import cj.springboot.wiki.mission.service.impl.CjMissionStepServiceImpl;
 import cn.com.ns.cj.cjuniversalspringbootstarter.returnData.CJAjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class CjMissionStepController {
 
     @GetMapping(value = "/{missionId}")
     public CJAjaxResult getMissionSteps(@PathVariable(value = "missionId",required = true) String missionId){
-        List<CJListResponse> list = cjMissionStepService.getMissionSteps(missionId);
+        List<CjMissionStepEntity> list = cjMissionStepService.getMissionSteps(missionId);
         return  CJAjaxResult.success("成功返回", list);
     }
 

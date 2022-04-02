@@ -5,6 +5,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 /**
@@ -15,6 +19,9 @@ import java.io.Serializable;
  * @author cj
  * @since 2022-03-25
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @TableName("cj_mission_step")
 public class CjMissionStepEntity extends CJBaseColmns {
 
@@ -35,50 +42,8 @@ public class CjMissionStepEntity extends CJBaseColmns {
     @TableField("description")
     private String description;
 
-    public String getId() {
-        return id;
-    }
+    @TableField("step_content")
+    private String stepContent;
 
-    public void setId(String id) {
-        this.id = id;
-    }
-    public String getTaskId() {
-        return taskId;
-    }
 
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "CjMissionStepEntity{" +
-            "id=" + id +
-            ", taskId=" + taskId +
-            ", avatar=" + avatar +
-            ", title=" + title +
-            ", description=" + description +
-        "}";
-    }
 }
