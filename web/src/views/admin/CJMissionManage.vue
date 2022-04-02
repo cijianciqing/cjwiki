@@ -82,7 +82,7 @@
                                 <template #title>新增Mission</template>
                                 <a-button type="primary" shape="circle" @click="addChildMission(record.id)">
                                     <template #icon>
-                                        <EditOutlined/>
+                                        <PlusOutlined />
                                     </template>
                                 </a-button>
                             </a-tooltip>
@@ -118,9 +118,10 @@
                     <template #renderItem="{ item }">
                         <a-list-item>
 
-                            <a-list-item-meta :description="item.description">
+<!--                            :description="item.description"-->
+                            <a-list-item-meta >
                                 <template #title>
-                                    <a href="https://www.antdv.com/">{{ item.title }}</a>
+                                    <h4>{{ item.title }}</h4>
                                 </template>
                                 <template #avatar>
                                     <a-avatar style="background-color: #1890ff">
@@ -129,6 +130,11 @@
                                         </template>
                                     </a-avatar>
                                     <!--                                        <a-avatar :src="item.avatar" />-->
+                                </template>
+                                <template #description>
+                                    {{item.description}}
+<!--                                    <div v-html="item.description"></div>-->
+<!--                                    {{item.description}}-->
                                 </template>
                             </a-list-item-meta>
                             <template #actions>
