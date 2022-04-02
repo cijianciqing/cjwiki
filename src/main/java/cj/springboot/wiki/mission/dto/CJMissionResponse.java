@@ -9,6 +9,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CJMissionResponse extends CjMissionInfoEntity {
+
+
+
     private List<CJMissionResponse> children;
 
 

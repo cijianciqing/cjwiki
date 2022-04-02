@@ -162,48 +162,95 @@
 
     </a-layout>
 
-    <a-modal
+
+
+    <a-drawer
             title="Mission Form"
-            v-model:visible="missionModalVisible"
-            :confirm-loading="missionModalLoading"
-            @ok="missionModalOk"
-            @cancel="missionModalCancel"
-
+            :width="720"
+            :visible="missionModalVisible"
+            :body-style="{ paddingBottom: '80px' }"
+            @close="missionModalCancel"
     >
-        <a-form :model="mission" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+        <a-form :model="mission"  layout="vertical">
 
-            <a-form-item label="名称">
-                <a-input v-model:value="mission.taskName"/>
-            </a-form-item>
-            <a-form-item label="描述">
-                <a-input v-model:value="mission.taskDesc" type="textarea"/>
-            </a-form-item>
+            <a-row :gutter="16">
+                <a-col :span="12">
+                    <a-form-item label="创建时间">
+                        <a-tag color="cyan">{{mission.createTime}}</a-tag>
+                    </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                    <a-form-item label="最近更新时间">
+                        <a-tag color="cyan">{{mission.updateTime}}</a-tag>
+                    </a-form-item>
+                </a-col>
+            </a-row>
 
-            <a-form-item label="重要程度">
+            <a-row :gutter="16">
+                <a-col :span="12">
+                    <a-form-item label="标题">
+                        <a-input id="inputNumber" v-model:value="mission.taskName" />
+                    </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                    <a-form-item label="重要程度">
+                        <a-input-number id="inputNumber" v-model:value="mission.taskImportant" :min="0" :max="10"/>
+                    </a-form-item>
+                </a-col>
+            </a-row>
 
-                <a-input-number id="inputNumber" v-model:value="mission.taskImportant" :min="0" :max="10"/>
-                <!--                <a-radio-group v-model:value="mission.taskImportant" button-style="solid">-->
-                <!--                    <a-radio-button value="veryImportant">非常重要</a-radio-button>-->
-                <!--                    <a-radio-button value="important">重要</a-radio-button>-->
-                <!--                    <a-radio-button value="normal">普通</a-radio-button>-->
-                <!--                    <a-radio-button value="noMatter">随便</a-radio-button>-->
-                <!--                </a-radio-group>-->
-            </a-form-item>
 
-            <a-form-item label="重要程度">
-                <a-radio-group v-model:value="mission.finishStatus" button-style="solid">
-                    <a-radio-button value="进行中">进行中</a-radio-button>
-                    <a-radio-button value="已完成">已完成</a-radio-button>
-                </a-radio-group>
-            </a-form-item>
+            <a-row :gutter="16">
+                <a-col :span="24">
+                    <a-form-item label="进度">
+                        <a-radio-group v-model:value="mission.finishStatus" button-style="solid">
+                            <a-radio-button value="进行中">进行中</a-radio-button>
+                            <a-radio-button value="已完成">已完成</a-radio-button>
+                        </a-radio-group>
+                    </a-form-item>
+                </a-col>
+            </a-row>
 
-            <a-form-item label="内容">
-                <a-textarea v-model:value="mission.taskContent" auto-size/>
-            </a-form-item>
+            <a-row :gutter="16">
+                <a-col :span="24">
+                    <a-form-item label="描述" name="description">
+                        <a-textarea
+                                v-model:value="mission.taskDesc"
+                                :rows="4"
+                                placeholder="please enter mission description"
+                        />
+                    </a-form-item>
+                </a-col>
+            </a-row>
+            <a-row :gutter="16">
+                <a-col :span="24">
+                    <a-form-item label="内容">
+                        <a-textarea v-model:value="mission.taskContent" auto-size
+                                    placeholder="please enter mission content"
+                        />
+                    </a-form-item>
+                </a-col>
+            </a-row>
+
         </a-form>
+        <div
+                :style="{
+        position: 'absolute',
+        right: 0,
+        bottom: 0,
+        width: '100%',
+        borderTop: '1px solid #e9e9e9',
+        padding: '10px 16px',
+        background: '#fff',
+        textAlign: 'right',
+        zIndex: 1,
+      }"
+        >
+            <a-button style="margin-right: 8px" @click="missionModalCancel">Cancel</a-button>
+            <a-button type="primary" @click="missionModalOk">Submit</a-button>
 
-    </a-modal>
-
+        </div>
+    </a-drawer>
     <a-modal
             title="MissionStep Form"
             v-model:visible="stepModalVisible"
@@ -419,6 +466,7 @@
             }
 
             const missionModalCancel = () => {
+                missionModalVisible.value = false;
                 clearMissionModal()
             }
 
