@@ -61,14 +61,15 @@
                         @change="handleChange"
                         :rowClassName="cjTableRowClass"
                         :customHeaderRow="cjTableHeaderRow"
+                        bordered
                 >
 
                     <!-- bordered 带边框-->
                     <template v-slot:importantRender="{ text: cjImportant,record,index }">
-                        <a-tag v-if="parseInt(cjImportant) > 7" color="red">非常重要</a-tag>
-                        <a-tag v-if=" parseInt(cjImportant)> 4  &&  parseInt(cjImportant)< 8 " color="orange">重要</a-tag>
-                        <a-tag v-if=" parseInt(cjImportant)> 0  &&  parseInt(cjImportant)< 4  " color="blue">普通</a-tag>
-                        <a-tag v-if="parseInt(cjImportant) === 0" color="cyan">无所谓</a-tag>
+                        <a-tag v-if="parseInt(cjImportant) > 7" color="red">非常重要 {{cjImportant}}</a-tag>
+                        <a-tag v-if=" parseInt(cjImportant)> 4  &&  parseInt(cjImportant)< 8 " color="orange">重要 {{cjImportant}}</a-tag>
+                        <a-tag v-if=" parseInt(cjImportant)> 0  &&  parseInt(cjImportant)< 4  " color="blue">普通 {{cjImportant}}</a-tag>
+                        <a-tag v-if="parseInt(cjImportant) === 0" color="cyan">无所谓 {{cjImportant}}</a-tag>
                     </template>
 
                     <template v-slot:finishRender="{ text: cjFinish,record,index }">
@@ -190,6 +191,19 @@
 
             <a-row :gutter="16">
                 <a-col :span="12">
+                    <a-form-item label="id">
+                        <a-tag color="cyan">{{mission.id}}</a-tag>
+                    </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                    <a-form-item label="parentId">
+                        <a-input id="inputNumber" v-model:value="mission.parentId" />
+                    </a-form-item>
+                </a-col>
+            </a-row>
+
+            <a-row :gutter="16">
+                <a-col :span="12">
                     <a-form-item label="标题">
                         <a-input id="inputNumber" v-model:value="mission.taskName" />
                     </a-form-item>
@@ -265,6 +279,7 @@
             :body-style="{ paddingBottom: '80px' }"
             @close="stepModalCancel"
             :afterVisibleChange="afterStepVisibleChange"
+            placement='left'
     >
         <a-form :model="mission"  layout="vertical">
 
@@ -408,20 +423,20 @@
                 {
                     title: '标题',
                     dataIndex: 'taskName',
-                    width:"20%",
+                    width:"25%",
                     // slots: { title: 'customColumnTitle' }
                     // ellipsis: true,
                 },
                 {
                     title: '描述',
                     dataIndex: 'taskDesc',
-                    width:"30%",
+                    width:"35%",
                     ellipsis: true,//超过长度后自动变为省略号。。。
                 },
                 {
                     title: '重要程度',
                     dataIndex: 'taskImportant',
-                    width:"15%",
+                    width:"10%",
                     // ellipsis: true,
                     slots: {customRender: 'importantRender'},
                     sortDirections: ['descend', 'ascend'],
@@ -435,7 +450,7 @@
                     title: '完成',
                     key: 'finishStatus',
                     dataIndex: 'finishStatus',
-                    width:"15%",
+                    width:"10%",
                     // ellipsis: true,
                     slots: {customRender: 'finishRender'},
                     filters: [

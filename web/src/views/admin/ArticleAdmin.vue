@@ -1,30 +1,18 @@
 <template>
     <a-layout id="components-layout-demo-fixed-sider">
-        <a-layout-sider :style="{background: '#fff', overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
-            <div class="logo" >
-                <a-tag color="#55acee" >
+        <a-layout-sider class="cjSider"
+                        :style="{ background: '#fff', overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
+            <div class="logo" :style="{  background: '#fff'}">
+                <a-tag color="#55acee">
                     <template #icon>
-                        <twitter-outlined />
+                        <twitter-outlined/>
                     </template>
                     Twitter
                 </a-tag>
-              <!--  <a-dropdown>
-                    <template #overlay>
-                        <a-menu @click="handleMenuClick">
-                            <a-menu-item key="1">新增</a-menu-item>
-                            <a-menu-item key="2">修改</a-menu-item>
-                            <a-menu-item key="3">删除</a-menu-item>
-                        </a-menu>
-                    </template>
-                    <a-button>
-                        操作
-                        <DownOutlined />
-                    </a-button>
-                </a-dropdown>-->
             </div>
             <ArticleCategoryTree/>
         </a-layout-sider>
-        <a-layout :style="{ marginLeft: '200px' }">
+        <a-layout :style="{ marginLeft: '300px' }">
             <a-layout-header :style="{ background: '#fff', padding: '0' }">
                 <GlobalHeader/>
             </a-layout-header>
@@ -53,8 +41,12 @@
             GlobalFooter,
             ArticleCategoryTree,
             ArticleTable,
+        },
+        setup() {
+            const cjSiderClass = "width: 300px!important"
 
-        }
+            return cjSiderClass
+        },
     }
 </script>
 
@@ -64,4 +56,17 @@
         /*background: dodgerblue;*/
         margin: 16px;
     }
+
+    /*
+   固定侧边栏加宽至300px
+    */
+    #components-layout-demo-fixed-sider .cjSider {
+        width: 300px !important;
+        max-width: 300px !important;
+        flex: 0 0 300px !important;
+    }
+
+    /*.cjSiderClass{*/
+    /*    width: 300px!important;*/
+    /*}*/
 </style>
