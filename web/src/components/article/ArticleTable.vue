@@ -186,6 +186,7 @@
     import {TreeDataItem} from "ant-design-vue/es/tree/Tree";
     import {useStore} from 'vuex'
     import E from 'wangeditor'
+    import cjStore from "@/store";
 
     export default defineComponent({
         name: "ArticleTable",
@@ -201,6 +202,10 @@
                 wangEditor.create()
                 //图片上传-配置服务端接口
                 wangEditor.config.uploadImgServer = process.env.VUE_APP_BackEndServer+'/wiki/article/wangeditor/upload/file'
+                //为请求头添加token
+                wangEditor.config.uploadImgHeaders = {
+                    token: store.state.user.token == undefined ? "" : cjStore.state.user.token
+                }
                 //图片上传-自定义 timeout 时间
                 wangEditor.config.uploadImgTimeout = 20 * 1000
                 //关闭粘贴样式的过滤

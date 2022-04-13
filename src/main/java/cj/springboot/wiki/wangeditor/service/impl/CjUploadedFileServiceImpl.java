@@ -58,7 +58,7 @@ public class CjUploadedFileServiceImpl extends ServiceImpl<CjUploadedFileDao, Cj
                     save(cjUploadedFileEntity);
                     String id = cjUploadedFileEntity.getId();
 
-                    cjUploadedFileEntity.setFilePath( WangEditor_Image_Upload_PATH+id);
+//                    cjUploadedFileEntity.setFilePath( WangEditor_Image_Upload_PATH+id);
 
                     try {
                         multipartFile.transferTo(new File(WangEditor_Image_Upload_PATH+id));
@@ -71,7 +71,7 @@ public class CjUploadedFileServiceImpl extends ServiceImpl<CjUploadedFileDao, Cj
                     CJWangEditorImageData cjWangEditorImageData = new CJWangEditorImageData();
 
                     //后端数据库不保存路径、路径即是 WangEditor_Image_Download_PATH+id
-                    //cjWangEditorImageData.setUrl(WangEditor_Image_Download_PATH+id);
+                    cjWangEditorImageData.setUrl(WangEditor_Image_Download_PATH+id);
 
                     cjWangEditorImageDataList.add(cjWangEditorImageData);
                 }
