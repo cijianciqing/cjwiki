@@ -43,9 +43,7 @@
             ArticleTable,
         },
         setup() {
-            const cjSiderClass = "width: 300px!important"
 
-            return cjSiderClass
         },
     }
 </script>
@@ -66,7 +64,5 @@
         flex: 0 0 300px !important;
     }
 
-    /*.cjSiderClass{*/
-    /*    width: 300px!important;*/
-    /*}*/
+
 </style>

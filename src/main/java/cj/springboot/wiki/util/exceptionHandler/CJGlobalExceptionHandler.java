@@ -21,7 +21,7 @@ import java.util.Map;
 /*暂时禁用此功能，便于开发调试*/
 //@Profile("pro")
 @RestController
-//@ControllerAdvice
+@ControllerAdvice
 public class CJGlobalExceptionHandler {
 //
 //    @Autowired

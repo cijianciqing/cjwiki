@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +69,10 @@ public class CjUploadedFileServiceImpl extends ServiceImpl<CjUploadedFileDao, Cj
 
 
                     CJWangEditorImageData cjWangEditorImageData = new CJWangEditorImageData();
-                    cjWangEditorImageData.setUrl(WangEditor_Image_Download_PATH+id);
+
+                    //后端数据库不保存路径、路径即是 WangEditor_Image_Download_PATH+id
+                    //cjWangEditorImageData.setUrl(WangEditor_Image_Download_PATH+id);
+
                     cjWangEditorImageDataList.add(cjWangEditorImageData);
                 }
             }
@@ -79,6 +83,18 @@ public class CjUploadedFileServiceImpl extends ServiceImpl<CjUploadedFileDao, Cj
     @Override
     public CjUploadedFileEntity getFile(String fileId) {
         CjUploadedFileEntity cjUploadedFile = getById(fileId);
+        String filePath = cjUploadedFile.getFilePath();
+        LocalDateTime createTime = cjUploadedFile.getCreateTime();
+
+        /*
+        * 2022-4-12 8:37:00之前的路径不一样
+        * */
+        boolean after = createTime.isAfter(LocalDateTime.of(2022, 4, 12, 8, 37, 0));
+        if(after){
+            cjUploadedFile.setFilePath(WangEditor_Image_Upload_PATH+fileId);
+        }else{
+            cjUploadedFile.setFilePath(WangEditor_Image_Upload_PATH+filePath);
+        }
         return cjUploadedFile;
     }
 }

@@ -70,8 +70,8 @@ public class CJSpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/cjRequireLogin").anonymous()
-//                .anyRequest().authenticated()//不能在anyRequest后配置anyRequest
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()//不能在anyRequest后配置anyRequest
+//                .anyRequest().permitAll()
 //                .anyRequest().access("@rbacService.hasPermission(request, authentication)")
         ;
 
@@ -135,5 +135,7 @@ public class CJSpringSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/sb2Static/**");
         web.ignoring().antMatchers("/icon/**");
         web.ignoring().antMatchers("/cjStatic/**");
+        web.ignoring().antMatchers("/wiki/article/wangeditor/image/**");
+
     }
 }
