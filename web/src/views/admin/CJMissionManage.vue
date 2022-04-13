@@ -362,6 +362,7 @@
     import {message} from "ant-design-vue";
     import {Tool} from "@/util/tool";
     import E from 'wangeditor'
+    import {useStore} from "vuex";
 
 /*
 * 对于有id-pid的数据
@@ -375,6 +376,7 @@
         },
         setup() {
 
+            const store = useStore()
             /*
             * 当页面加载时，自动获取所有的mission
             * */
@@ -390,6 +392,10 @@
                 wangEditor_mission.create()
                 //图片上传-配置服务端接口
                 wangEditor_mission.config.uploadImgServer = process.env.VUE_APP_BackEndServer+'/wiki/article/wangeditor/upload/file'
+                //为请求头添加token
+                wangEditor_mission.config.uploadImgHeaders = {
+                    token: store.state.user.token == undefined ? "" : store.state.user.token
+                }
                 //图片上传-自定义 timeout 时间
                 wangEditor_mission.config.uploadImgTimeout = 20 * 1000
                 //关闭粘贴样式的过滤
@@ -402,6 +408,10 @@
                 wangEditor_step.create()
                 //图片上传-配置服务端接口
                 wangEditor_step.config.uploadImgServer = process.env.VUE_APP_BackEndServer+'/wiki/article/wangeditor/upload/file'
+                //为请求头添加token
+                wangEditor_step.config.uploadImgHeaders = {
+                    token: store.state.user.token == undefined ? "" : store.state.user.token
+                }
                 //图片上传-自定义 timeout 时间
                 wangEditor_step.config.uploadImgTimeout = 20 * 1000
                 //关闭粘贴样式的过滤

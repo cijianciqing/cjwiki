@@ -21,12 +21,12 @@
 
      <!--测试环境-->
      <springProfile name="dev">
-         <springProperty scope="context" name="log.filePath" source="cj.springboot.log.path.dev"
+         <springProperty scope="context" name="log.filePath" source="cj.springboot.log.path"
                          defaultValue="cjFilePath"/>
      </springProfile>
      <!--正式环境-->
      <springProfile name="pro">
-         <springProperty scope="context" name="log.filePath" source="cj.springboot.log.path.pro"
+         <springProperty scope="context" name="log.filePath" source="cj.springboot.log.path"
                          defaultValue="cjFilePath"/>
      </springProfile>
 

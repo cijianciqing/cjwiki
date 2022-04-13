@@ -204,8 +204,9 @@
                 wangEditor.config.uploadImgServer = process.env.VUE_APP_BackEndServer+'/wiki/article/wangeditor/upload/file'
                 //为请求头添加token
                 wangEditor.config.uploadImgHeaders = {
-                    token: store.state.user.token == undefined ? "" : cjStore.state.user.token
+                    token: store.state.user.token == undefined ? "" : store.state.user.token
                 }
+
                 //图片上传-自定义 timeout 时间
                 wangEditor.config.uploadImgTimeout = 20 * 1000
                 //关闭粘贴样式的过滤
@@ -221,6 +222,10 @@
                 wangEditor2.txt.html(content);
                 //图片上传-配置服务端接口
                 wangEditor2.config.uploadImgServer = process.env.VUE_APP_BackEndServer+'/wiki/article/wangeditor/upload/file'
+                //为请求头添加token
+                wangEditor2.config.uploadImgHeaders = {
+                    token: store.state.user.token == undefined ? "" : store.state.user.token
+                }
                 //图片上传-自定义 timeout 时间
                 wangEditor2.config.uploadImgTimeout = 20 * 1000
                 //关闭粘贴样式的过滤
