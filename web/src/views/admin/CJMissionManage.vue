@@ -50,7 +50,7 @@
         -->
 
         <a-row :gutter="16">
-            <a-col style="background-color: lightskyblue;" :span="16">
+            <a-col  :span="16"><!--style="background-color: lightskyblue;"-->
                 <a-table
                         :columns="columns"
                         :row-key="record => record.id"
@@ -61,9 +61,8 @@
                         @change="handleChange"
                         :rowClassName="cjTableRowClass"
                         :customHeaderRow="cjTableHeaderRow"
-                        bordered
+                        :indentSize = 30
                 >
-
                     <!-- bordered 带边框-->
                     <template v-slot:importantRender="{ text: cjImportant,record,index }">
                         <a-tag v-if="parseInt(cjImportant) > 7" color="red">非常重要 {{cjImportant}}</a-tag>
@@ -435,7 +434,7 @@
                     dataIndex: 'taskName',
                     width:"25%",
                     // slots: { title: 'customColumnTitle' }
-                    // ellipsis: true,
+                    ellipsis: true,
                 },
                 {
                     title: '描述',
@@ -452,7 +451,6 @@
                     sortDirections: ['descend', 'ascend'],
                     defaultSortOrder: 'descend',
                     sorter: (a: CJMissionTableDataType, b: CJMissionTableDataType) => {
-
                         return a.taskImportant - b.taskImportant
                     }
                 },
@@ -503,7 +501,8 @@
             }
 
             const cjTableRowClass = (record:any, index:number)=>{
-                if(index%2 == 1){
+                // if(index%2 == 1){
+                if(record.parentId == 0){
                     return "cjTableRowClass"
                 }
                 return null
@@ -790,11 +789,18 @@
     .cjTableHeaderClass{
         /*font-size: large;*/
         font-family: "Times New Roman",Georgia,Serif,serif;
-        text-align:center;
+
+    }
+    .cjTableHeaderClass th{
+        /*font-size: large;*/
+        font-family: "Times New Roman",Georgia,Serif,serif;
+        background: #B3CCE5 !important;
+        font-weight: bold !important;
+        text-align:center !important;
 
     }
     .cjTableRowClass {
-        background-color: #F1F3F4;
+        background-color: #B3CCE5;
     }
     #components-layout-demo-fixed .logo {
         width: 120px;

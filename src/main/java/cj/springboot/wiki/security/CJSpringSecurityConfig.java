@@ -70,13 +70,13 @@ public class CJSpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/cjRequireLogin").anonymous()
-                .anyRequest().authenticated()//不能在anyRequest后配置anyRequest
-//                .anyRequest().permitAll()
+//                .anyRequest().authenticated()//不能在anyRequest后配置anyRequest
+                .anyRequest().permitAll()
 //                .anyRequest().access("@rbacService.hasPermission(request, authentication)")
         ;
 
         //把token校验过滤器添加到过滤器链中
-        http.addFilterBefore(cjJwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(cjJwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
 
 
